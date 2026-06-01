@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8190505641369874133}
   - component: {fileID: 5917549926722009585}
   - component: {fileID: 8053444062742042143}
+  - component: {fileID: 3051595898486047221}
   m_Layer: 0
   m_Name: LaserProjectile
   m_TagString: Untagged
@@ -144,3 +145,30 @@ MonoBehaviour:
   speed: 14
   damage: 10
   lifetime: 2
+--- !u!50 &3051595898486047221
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2598849787479219593}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 0
