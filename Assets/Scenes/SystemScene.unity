@@ -426,6 +426,7 @@ GameObject:
   - component: {fileID: 1454579601}
   - component: {fileID: 1454579604}
   - component: {fileID: 1454579605}
+  - component: {fileID: 1454579606}
   m_Layer: 0
   m_Name: EnemyShip
   m_TagString: Untagged
@@ -601,6 +602,20 @@ MonoBehaviour:
   fireCooldown: 1.25
   firingRange: 6
   target: {fileID: 0}
+--- !u!114 &1454579606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1454579598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07d015b3247d2bb45991b12c6477e115, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageFlash
+  flashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashDuration: 0.08
 --- !u!1 &1543085955
 GameObject:
   m_ObjectHideFlags: 0
@@ -826,6 +841,7 @@ GameObject:
   - component: {fileID: 2001536260}
   - component: {fileID: 2001536261}
   - component: {fileID: 2001536262}
+  - component: {fileID: 2001536263}
   m_Layer: 0
   m_Name: PlayerShip
   m_TagString: Player
@@ -998,6 +1014,20 @@ MonoBehaviour:
   projectilePrefab: {fileID: 8053444062742042143, guid: fd58eaa6bd6e05a499fb6509be631d36, type: 3}
   firePoint: {fileID: 1630908550}
   fireCooldown: 0.25
+--- !u!114 &2001536263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2001536255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07d015b3247d2bb45991b12c6477e115, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageFlash
+  flashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashDuration: 0.08
 --- !u!1 &2047627609
 GameObject:
   m_ObjectHideFlags: 0
