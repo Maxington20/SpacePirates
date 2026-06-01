@@ -13,9 +13,12 @@ public class ShipHealth : MonoBehaviour
     public event Action<int, int> HealthChanged;
     public event Action ShipDestroyed;
 
+    private DamageFlash damageFlash;
+
     private void Awake()
     {
         CurrentHealth = maxHealth;
+        damageFlash = GetComponent<DamageFlash>();
     }
 
     private void Start()
@@ -33,6 +36,7 @@ public class ShipHealth : MonoBehaviour
         CurrentHealth -= amount;
         CurrentHealth = Mathf.Max(CurrentHealth, 0);
 
+        damageFlash?.Flash();
         HealthChanged?.Invoke(CurrentHealth, maxHealth);
 
         Debug.Log($"{gameObject.name} took {amount} damage. HP: {CurrentHealth}/{maxHealth}");

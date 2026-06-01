@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
 public class EnemyShipController : MonoBehaviour
 {
     [Header("Target")]
@@ -11,27 +10,22 @@ public class EnemyShipController : MonoBehaviour
     [SerializeField] private float rotationSpeed = 120f;
     [SerializeField] private float stoppingDistance = 3f;
 
-    private Rigidbody2D rb;
-
-    private void Awake()
-    {
-        rb = GetComponent<Rigidbody2D>();
-    }
-
     private void Start()
     {
-        if (target == null)
+        if (target != null)
         {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            return;
+        }
 
-            if (player != null)
-            {
-                target = player.transform;
-            }
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+        if (player != null)
+        {
+            target = player.transform;
         }
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (target == null)
         {
@@ -52,9 +46,10 @@ public class EnemyShipController : MonoBehaviour
         }
 
         float targetAngle = Mathf.Atan2(directionToTarget.y, directionToTarget.x) * Mathf.Rad2Deg - 90f;
-        float newAngle = Mathf.MoveTowardsAngle(rb.rotation, targetAngle, rotationSpeed * Time.fixedDeltaTime);
+        float currentAngle = transform.eulerAngles.z;
+        float newAngle = Mathf.MoveTowardsAngle(currentAngle, targetAngle, rotationSpeed * Time.deltaTime);
 
-        rb.MoveRotation(newAngle);
+        transform.rotation = Quaternion.Euler(0f, 0f, newAngle);
     }
 
     private void MoveTowardTarget()
@@ -63,10 +58,9 @@ public class EnemyShipController : MonoBehaviour
 
         if (distance <= stoppingDistance)
         {
-            rb.linearVelocity = Vector2.zero;
             return;
         }
 
-        rb.linearVelocity = transform.up * moveSpeed;
+        transform.position += transform.up * moveSpeed * Time.deltaTime;
     }
 }
