@@ -2,10 +2,13 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject enemyPrefab;
+    [Header("Enemy Prefabs")]
+    [SerializeField] private GameObject defaultEnemyPrefab;
+    [SerializeField] private GameObject pirateEnemyPrefab;
+
+    [Header("Respawn")]
     [SerializeField] private float respawnDelay = 5f;
 
-    private GameObject spawnedEnemy;
     private float respawnTimer;
     private bool waitingForRespawn;
 
@@ -25,23 +28,22 @@ public class EnemySpawner : MonoBehaviour
 
         if (respawnTimer <= 0f)
         {
-            SpawnEnemy();
             waitingForRespawn = false;
+            SpawnEnemy();
         }
     }
 
     private void SpawnEnemy()
     {
-        if (enemyPrefab == null)
+        GameObject prefabToSpawn = GetPrefabForCurrentSystem();
+
+        if (prefabToSpawn == null)
         {
-            Debug.LogWarning("EnemySpawner is missing an enemy prefab.");
+            Debug.LogWarning("EnemySpawner has no valid enemy prefab assigned.");
             return;
         }
 
-        spawnedEnemy = Instantiate(
-            enemyPrefab,
-            transform.position,
-            Quaternion.identity);
+        GameObject spawnedEnemy = Instantiate(prefabToSpawn, transform.position, Quaternion.identity);
 
         ShipHealth health = spawnedEnemy.GetComponent<ShipHealth>();
 
@@ -49,6 +51,16 @@ public class EnemySpawner : MonoBehaviour
         {
             health.ShipDestroyed += HandleEnemyDestroyed;
         }
+    }
+
+    private GameObject GetPrefabForCurrentSystem()
+    {
+        if (GameState.CurrentSystem != null && GameState.CurrentSystem.IsPirateControlled)
+        {
+            return pirateEnemyPrefab != null ? pirateEnemyPrefab : defaultEnemyPrefab;
+        }
+
+        return defaultEnemyPrefab;
     }
 
     private void HandleEnemyDestroyed()

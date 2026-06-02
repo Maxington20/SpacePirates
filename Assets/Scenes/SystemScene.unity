@@ -863,7 +863,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c983a82a315f14eab9c3518725092d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
-  enemyPrefab: {fileID: 265217396433256716, guid: c2bfc5f0057c6ae4f8f6c1b9477b5ce1, type: 3}
+  defaultEnemyPrefab: {fileID: 265217396433256716, guid: c2bfc5f0057c6ae4f8f6c1b9477b5ce1, type: 3}
+  pirateEnemyPrefab: {fileID: 265217396433256716, guid: c2bfc5f0057c6ae4f8f6c1b9477b5ce1, type: 3}
   respawnDelay: 5
 --- !u!1 &1299135538
 GameObject:
