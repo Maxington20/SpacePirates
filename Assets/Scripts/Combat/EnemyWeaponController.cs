@@ -5,14 +5,19 @@ public class EnemyWeaponController : MonoBehaviour
     [Header("Weapon")]
     [SerializeField] private Projectile projectilePrefab;
     [SerializeField] private Transform firePoint;
-    [SerializeField] private WeaponDefinition weaponDefinition;
     [SerializeField] private float fallbackFireCooldown = 1.25f;
     [SerializeField] private float firingRange = 6f;
 
     [Header("Target")]
     [SerializeField] private Transform target;
 
+    private ShipLoadout shipLoadout;
     private float nextFireTime;
+
+    private void Awake()
+    {
+        shipLoadout = GetComponent<ShipLoadout>();
+    }
 
     private void Start()
     {
@@ -48,18 +53,18 @@ public class EnemyWeaponController : MonoBehaviour
 
         Fire();
 
-        float cooldown = weaponDefinition != null
-            ? weaponDefinition.FireCooldown
-            : fallbackFireCooldown;
+        WeaponDefinition weapon = shipLoadout != null ? shipLoadout.PrimaryWeapon : null;
+        float cooldown = weapon != null ? weapon.FireCooldown : fallbackFireCooldown;
 
         nextFireTime = Time.time + cooldown;
     }
 
     private void Fire()
     {
+        WeaponDefinition weapon = shipLoadout != null ? shipLoadout.PrimaryWeapon : null;
         Vector2 fireDirection = target.position - firePoint.position;
 
         Projectile projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
-        projectile.Initialize(fireDirection, gameObject, weaponDefinition);
+        projectile.Initialize(fireDirection, gameObject, weapon);
     }
 }

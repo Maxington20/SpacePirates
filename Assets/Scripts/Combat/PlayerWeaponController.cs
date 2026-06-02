@@ -4,13 +4,15 @@ public class PlayerWeaponController : MonoBehaviour
 {
     [SerializeField] private Projectile projectilePrefab;
     [SerializeField] private Transform firePoint;
-    [SerializeField] private WeaponDefinition weaponDefinition;
     [SerializeField] private TargetingController targetingController;
 
+    private ShipLoadout shipLoadout;
     private float nextFireTime;
 
     private void Awake()
     {
+        shipLoadout = GetComponent<ShipLoadout>();
+
         if (targetingController == null)
         {
             targetingController = GetComponent<TargetingController>();
@@ -31,7 +33,9 @@ public class PlayerWeaponController : MonoBehaviour
 
         Fire();
 
-        float cooldown = weaponDefinition != null ? weaponDefinition.FireCooldown : 0.25f;
+        WeaponDefinition weapon = shipLoadout != null ? shipLoadout.PrimaryWeapon : null;
+        float cooldown = weapon != null ? weapon.FireCooldown : 0.25f;
+
         nextFireTime = Time.time + cooldown;
     }
 
@@ -43,6 +47,8 @@ public class PlayerWeaponController : MonoBehaviour
             return;
         }
 
+        WeaponDefinition weapon = shipLoadout != null ? shipLoadout.PrimaryWeapon : null;
+
         Vector2 fireDirection = transform.up;
 
         if (targetingController != null && targetingController.CurrentTarget != null)
@@ -51,6 +57,6 @@ public class PlayerWeaponController : MonoBehaviour
         }
 
         Projectile projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
-        projectile.Initialize(fireDirection, gameObject, weaponDefinition);
+        projectile.Initialize(fireDirection, gameObject, weapon);
     }
 }

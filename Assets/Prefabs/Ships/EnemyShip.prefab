@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 2127952215649458880}
   - component: {fileID: 2982151242571249783}
   - component: {fileID: 6074738443044638070}
+  - component: {fileID: 1818857925806248452}
   m_Layer: 0
   m_Name: EnemyShip
   m_TagString: Untagged
@@ -191,7 +192,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyWeaponController
   projectilePrefab: {fileID: 8053444062742042143, guid: fd58eaa6bd6e05a499fb6509be631d36, type: 3}
   firePoint: {fileID: 7041244906659454083}
-  weaponDefinition: {fileID: 11400000, guid: 88e8a50c1e9e8ef4ca806d744d37c1bf, type: 2}
   fallbackFireCooldown: 1.25
   firingRange: 6
   target: {fileID: 0}
@@ -236,6 +236,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipDefinitionHolder
   shipDefinition: {fileID: 11400000, guid: 7353d1c264676da4bae7f028bc1280bf, type: 2}
+--- !u!114 &1818857925806248452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 265217396433256716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 456f1afae138a02459748efc80d0b046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShipLoadout
+  primaryWeapon: {fileID: 11400000, guid: 88e8a50c1e9e8ef4ca806d744d37c1bf, type: 2}
 --- !u!1 &1549414063692853767
 GameObject:
   m_ObjectHideFlags: 0
