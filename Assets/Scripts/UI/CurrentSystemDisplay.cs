@@ -7,13 +7,20 @@ public class CurrentSystemDisplay : MonoBehaviour
 
     private void Start()
     {
+        Refresh();
+    }
+
+    private void Refresh()
+    {
         if (systemNameText == null)
         {
             return;
         }
 
-        systemNameText.text = GameState.CurrentSystem != null
+        string systemName = GameState.CurrentSystem != null
             ? GameState.CurrentSystem.SystemName
             : "Unknown System";
+
+        systemNameText.text = systemName;
     }
 }

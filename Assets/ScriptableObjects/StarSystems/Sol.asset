@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04289d2fe89eff443b140b6106c3e9ed, type: 3}
   m_Name: Sol
   m_EditorClassIdentifier: Assembly-CSharp::StarSystemDefinition
-  systemName: Unknown Sol
+  systemName: Sol
   hasStation: 1
   isPirateControlled: 0
