@@ -4,7 +4,7 @@ public class PlayerWeaponController : MonoBehaviour
 {
     [SerializeField] private Projectile projectilePrefab;
     [SerializeField] private Transform firePoint;
-    [SerializeField] private float fireCooldown = 0.25f;
+    [SerializeField] private WeaponDefinition weaponDefinition;
     [SerializeField] private TargetingController targetingController;
 
     private float nextFireTime;
@@ -30,7 +30,9 @@ public class PlayerWeaponController : MonoBehaviour
         }
 
         Fire();
-        nextFireTime = Time.time + fireCooldown;
+
+        float cooldown = weaponDefinition != null ? weaponDefinition.FireCooldown : 0.25f;
+        nextFireTime = Time.time + cooldown;
     }
 
     private void Fire()
@@ -49,6 +51,6 @@ public class PlayerWeaponController : MonoBehaviour
         }
 
         Projectile projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
-        projectile.Initialize(fireDirection, gameObject);
+        projectile.Initialize(fireDirection, gameObject, weaponDefinition);
     }
 }

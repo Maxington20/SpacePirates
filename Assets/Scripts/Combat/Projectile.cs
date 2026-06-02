@@ -2,18 +2,24 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    [SerializeField] private float speed = 14f;
-    [SerializeField] private int damage = 10;
-    [SerializeField] private float lifetime = 2f;
+    [SerializeField] private float fallbackSpeed = 14f;
+    [SerializeField] private int fallbackDamage = 10;
+    [SerializeField] private float fallbackLifetime = 2f;
 
     private Vector2 direction;
     private GameObject owner;
+    private int damage;
+    private float speed;
 
-    public void Initialize(Vector2 fireDirection, GameObject projectileOwner)
+    public void Initialize(Vector2 fireDirection, GameObject projectileOwner, WeaponDefinition weaponDefinition = null)
     {
         direction = fireDirection.normalized;
         owner = projectileOwner;
 
+        damage = weaponDefinition != null ? weaponDefinition.Damage : fallbackDamage;
+        speed = weaponDefinition != null ? weaponDefinition.ProjectileSpeed : fallbackSpeed;
+
+        float lifetime = weaponDefinition != null ? weaponDefinition.ProjectileLifetime : fallbackLifetime;
         Destroy(gameObject, lifetime);
     }
 

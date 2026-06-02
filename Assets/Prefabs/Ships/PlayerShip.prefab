@@ -280,9 +280,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3b701fc50f5f134fb6f694a0a3c8c64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerShipController
-  forwardSpeed: 6
-  reverseSpeed: 3
-  rotationSpeed: 180
+  fallbackForwardSpeed: 6
+  fallbackReverseSpeed: 3
+  fallbackRotationSpeed: 180
 --- !u!114 &434374597197960860
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -295,7 +295,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35c5aecc96a04584c8857eea9667e10b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipHealth
-  maxHealth: 100
+  fallbackMaxHealth: 100
   destructionEffectPrefab: {fileID: 191205178173224245, guid: 0655f840f3fd35d4e8bbce353909fc16, type: 3}
   floatingDamageTextPrefab: {fileID: 6069803462347529160, guid: cd413467f934aa644a4be55d2381147f, type: 3}
 --- !u!114 &6592300086413056170
@@ -312,7 +312,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerWeaponController
   projectilePrefab: {fileID: 8053444062742042143, guid: fd58eaa6bd6e05a499fb6509be631d36, type: 3}
   firePoint: {fileID: 7564089447170953119}
-  fireCooldown: 0.25
+  weaponDefinition: {fileID: 11400000, guid: 88e8a50c1e9e8ef4ca806d744d37c1bf, type: 2}
   targetingController: {fileID: 3671943067459681943}
 --- !u!114 &8718653593457515594
 MonoBehaviour:

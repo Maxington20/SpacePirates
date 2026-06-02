@@ -158,7 +158,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35c5aecc96a04584c8857eea9667e10b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipHealth
-  maxHealth: 100
+  fallbackMaxHealth: 100
   destructionEffectPrefab: {fileID: 191205178173224245, guid: 0655f840f3fd35d4e8bbce353909fc16, type: 3}
   floatingDamageTextPrefab: {fileID: 6069803462347529160, guid: cd413467f934aa644a4be55d2381147f, type: 3}
 --- !u!114 &1114446626365644794
@@ -174,8 +174,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyShipController
   target: {fileID: 0}
-  moveSpeed: 2
-  rotationSpeed: 120
+  fallbackMoveSpeed: 2
+  fallbackRotationSpeed: 120
   stoppingDistance: 3
 --- !u!114 &6451560310463544872
 MonoBehaviour:
@@ -191,7 +191,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyWeaponController
   projectilePrefab: {fileID: 8053444062742042143, guid: fd58eaa6bd6e05a499fb6509be631d36, type: 3}
   firePoint: {fileID: 7041244906659454083}
-  fireCooldown: 1.25
+  weaponDefinition: {fileID: 11400000, guid: 88e8a50c1e9e8ef4ca806d744d37c1bf, type: 2}
+  fallbackFireCooldown: 1.25
   firingRange: 6
   target: {fileID: 0}
 --- !u!114 &2127952215649458880
@@ -220,7 +221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c8e5037b2eb75049a045abf536ef36a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Targetable
-  displayName: Pirate Raider
+  fallbackDisplayName: Unknown Ship
   isTargetable: 1
 --- !u!114 &6074738443044638070
 MonoBehaviour:

@@ -5,7 +5,8 @@ public class EnemyWeaponController : MonoBehaviour
     [Header("Weapon")]
     [SerializeField] private Projectile projectilePrefab;
     [SerializeField] private Transform firePoint;
-    [SerializeField] private float fireCooldown = 1.25f;
+    [SerializeField] private WeaponDefinition weaponDefinition;
+    [SerializeField] private float fallbackFireCooldown = 1.25f;
     [SerializeField] private float firingRange = 6f;
 
     [Header("Target")]
@@ -46,12 +47,19 @@ public class EnemyWeaponController : MonoBehaviour
         }
 
         Fire();
-        nextFireTime = Time.time + fireCooldown;
+
+        float cooldown = weaponDefinition != null
+            ? weaponDefinition.FireCooldown
+            : fallbackFireCooldown;
+
+        nextFireTime = Time.time + cooldown;
     }
 
     private void Fire()
     {
-        Projectile projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
-        projectile.Initialize(transform.up, gameObject);
+        Vector2 fireDirection = target.position - firePoint.position;
+
+        Projectile projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
+        projectile.Initialize(fireDirection, gameObject, weaponDefinition);
     }
 }
