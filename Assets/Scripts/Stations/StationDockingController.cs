@@ -3,6 +3,7 @@ using UnityEngine;
 public class StationDockingController : MonoBehaviour
 {
     [SerializeField] private TargetingController targetingController;
+    [SerializeField] private StationUI stationUI;
     [SerializeField] private KeyCode dockKey = KeyCode.E;
 
     private void Awake()
@@ -15,12 +16,15 @@ public class StationDockingController : MonoBehaviour
 
     private void Update()
     {
-        if (!Input.GetKeyDown(dockKey))
+        if (Input.GetKeyDown(dockKey))
         {
-            return;
+            TryDock();
         }
 
-        TryDock();
+        if (Input.GetKeyDown(KeyCode.Escape) && stationUI != null)
+        {
+            stationUI.Hide();
+        }
     }
 
     private void TryDock()
@@ -48,5 +52,10 @@ public class StationDockingController : MonoBehaviour
         }
 
         Debug.Log($"Docked at {station.StationName}.");
+
+        if (stationUI != null)
+        {
+            stationUI.Show(station);
+        }
     }
 }

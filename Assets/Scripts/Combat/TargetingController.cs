@@ -72,6 +72,11 @@ public class TargetingController : MonoBehaviour
 
     private bool IsValidTarget(Targetable targetable)
     {
+        if (PlayerState.IsDocked)
+        {
+            return false;
+        }
+
         if (targetable == null)
         {
             return false;

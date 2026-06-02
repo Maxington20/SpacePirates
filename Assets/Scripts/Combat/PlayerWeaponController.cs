@@ -21,6 +21,12 @@ public class PlayerWeaponController : MonoBehaviour
 
     private void Update()
     {
+
+        if (PlayerState.IsDocked)
+        {
+            return;
+        }
+
         if (!Input.GetKey(KeyCode.Space))
         {
             return;

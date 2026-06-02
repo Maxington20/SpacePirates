@@ -31,6 +31,12 @@ public class PlayerShipController : MonoBehaviour
 
     private void Update()
     {
+
+        if (PlayerState.IsDocked)
+        {
+            return;
+        }
+
         float thrustInput = 0f;
         float rotationInput = 0f;
 
