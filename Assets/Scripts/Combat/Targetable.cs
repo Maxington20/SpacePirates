@@ -3,7 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(ShipHealth))]
 public class Targetable : MonoBehaviour
 {
-    [SerializeField] private string fallbackDisplayName = "Unknown Ship";
+    [SerializeField] private string fallbackDisplayName = "Unknown Target";
     [SerializeField] private bool isTargetable = true;
 
     public bool IsTargetable => isTargetable;
@@ -13,8 +13,13 @@ public class Targetable : MonoBehaviour
     {
         get
         {
-            ShipDefinitionHolder holder = GetComponent<ShipDefinitionHolder>();
+            Station station = GetComponent<Station>();
+            if (station != null)
+            {
+                return station.StationName;
+            }
 
+            ShipDefinitionHolder holder = GetComponent<ShipDefinitionHolder>();
             if (holder != null && holder.ShipDefinition != null)
             {
                 return holder.ShipDefinition.ShipName;

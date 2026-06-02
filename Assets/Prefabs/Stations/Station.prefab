@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 7617586222602105444}
   - component: {fileID: 3227832869332008853}
   - component: {fileID: 4893489625952168040}
+  - component: {fileID: 3421213875502248362}
+  - component: {fileID: 6571969287020191855}
   m_Layer: 0
   m_Name: Station
   m_TagString: Untagged
@@ -106,6 +108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Station
   stationName: Station
+  dockingRange: 3
 --- !u!58 &4893489625952168040
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -142,3 +145,32 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
+--- !u!114 &3421213875502248362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6803388140383679649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35c5aecc96a04584c8857eea9667e10b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShipHealth
+  fallbackMaxHealth: 9999
+  destructionEffectPrefab: {fileID: 0}
+  floatingDamageTextPrefab: {fileID: 0}
+--- !u!114 &6571969287020191855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6803388140383679649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c8e5037b2eb75049a045abf536ef36a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Targetable
+  fallbackDisplayName: Station
+  isTargetable: 1
