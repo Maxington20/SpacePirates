@@ -137,6 +137,7 @@ GameObject:
   - component: {fileID: 434374597197960860}
   - component: {fileID: 6592300086413056170}
   - component: {fileID: 8718653593457515594}
+  - component: {fileID: 3671943067459681943}
   m_Layer: 0
   m_Name: PlayerShip
   m_TagString: Player
@@ -325,3 +326,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DamageFlash
   flashColor: {r: 1, g: 1, b: 1, a: 1}
   flashDuration: 0.08
+--- !u!114 &3671943067459681943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7446172372825288235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12ecde3959fc46746a0b24a84efa4ea6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TargetingController
+  targetingRange: 25
+  cycleTargetKey: 9
