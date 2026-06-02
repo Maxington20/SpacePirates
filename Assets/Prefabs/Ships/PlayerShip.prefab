@@ -312,6 +312,7 @@ MonoBehaviour:
   projectilePrefab: {fileID: 8053444062742042143, guid: fd58eaa6bd6e05a499fb6509be631d36, type: 3}
   firePoint: {fileID: 7564089447170953119}
   fireCooldown: 0.25
+  targetingController: {fileID: 3671943067459681943}
 --- !u!114 &8718653593457515594
 MonoBehaviour:
   m_ObjectHideFlags: 0

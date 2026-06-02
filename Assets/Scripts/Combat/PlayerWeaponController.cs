@@ -5,8 +5,17 @@ public class PlayerWeaponController : MonoBehaviour
     [SerializeField] private Projectile projectilePrefab;
     [SerializeField] private Transform firePoint;
     [SerializeField] private float fireCooldown = 0.25f;
+    [SerializeField] private TargetingController targetingController;
 
     private float nextFireTime;
+
+    private void Awake()
+    {
+        if (targetingController == null)
+        {
+            targetingController = GetComponent<TargetingController>();
+        }
+    }
 
     private void Update()
     {
@@ -32,7 +41,14 @@ public class PlayerWeaponController : MonoBehaviour
             return;
         }
 
-        Projectile projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
-        projectile.Initialize(transform.up, gameObject);
+        Vector2 fireDirection = transform.up;
+
+        if (targetingController != null && targetingController.CurrentTarget != null)
+        {
+            fireDirection = targetingController.CurrentTarget.transform.position - firePoint.position;
+        }
+
+        Projectile projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
+        projectile.Initialize(fireDirection, gameObject);
     }
 }
