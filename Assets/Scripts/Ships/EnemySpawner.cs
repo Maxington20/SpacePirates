@@ -3,20 +3,34 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] private GameObject enemyPrefab;
-    [SerializeField] private Transform spawnPoint;
-    [SerializeField] private bool spawnOnStart = true;
+    [SerializeField] private float respawnDelay = 5f;
 
     private GameObject spawnedEnemy;
+    private float respawnTimer;
+    private bool waitingForRespawn;
 
     private void Start()
     {
-        if (spawnOnStart)
+        SpawnEnemy();
+    }
+
+    private void Update()
+    {
+        if (!waitingForRespawn)
+        {
+            return;
+        }
+
+        respawnTimer -= Time.deltaTime;
+
+        if (respawnTimer <= 0f)
         {
             SpawnEnemy();
+            waitingForRespawn = false;
         }
     }
 
-    public void SpawnEnemy()
+    private void SpawnEnemy()
     {
         if (enemyPrefab == null)
         {
@@ -24,8 +38,22 @@ public class EnemySpawner : MonoBehaviour
             return;
         }
 
-        Vector3 position = spawnPoint != null ? spawnPoint.position : transform.position;
+        spawnedEnemy = Instantiate(
+            enemyPrefab,
+            transform.position,
+            Quaternion.identity);
 
-        spawnedEnemy = Instantiate(enemyPrefab, position, Quaternion.identity);
+        ShipHealth health = spawnedEnemy.GetComponent<ShipHealth>();
+
+        if (health != null)
+        {
+            health.ShipDestroyed += HandleEnemyDestroyed;
+        }
+    }
+
+    private void HandleEnemyDestroyed()
+    {
+        waitingForRespawn = true;
+        respawnTimer = respawnDelay;
     }
 }
