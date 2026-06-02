@@ -5,17 +5,33 @@ public class EnemyShipController : MonoBehaviour
     [Header("Target")]
     [SerializeField] private Transform target;
 
-    [Header("Movement")]
-    [SerializeField] private float moveSpeed = 2f;
-    [SerializeField] private float rotationSpeed = 120f;
+    [Header("Fallback Movement")]
+    [SerializeField] private float fallbackMoveSpeed = 2f;
+    [SerializeField] private float fallbackRotationSpeed = 120f;
     [SerializeField] private float stoppingDistance = 3f;
+
+    private float moveSpeed;
+    private float rotationSpeed;
+
+    private void Awake()
+    {
+        ShipDefinitionHolder holder = GetComponent<ShipDefinitionHolder>();
+
+        if (holder != null && holder.ShipDefinition != null)
+        {
+            moveSpeed = holder.ShipDefinition.ForwardSpeed;
+            rotationSpeed = holder.ShipDefinition.RotationSpeed;
+        }
+        else
+        {
+            moveSpeed = fallbackMoveSpeed;
+            rotationSpeed = fallbackRotationSpeed;
+        }
+    }
 
     private void Start()
     {
-        if (target != null)
-        {
-            return;
-        }
+        if (target != null) return;
 
         GameObject player = GameObject.FindGameObjectWithTag("Player");
 
@@ -27,10 +43,7 @@ public class EnemyShipController : MonoBehaviour
 
     private void Update()
     {
-        if (target == null)
-        {
-            return;
-        }
+        if (target == null) return;
 
         RotateTowardTarget();
         MoveTowardTarget();
@@ -40,10 +53,7 @@ public class EnemyShipController : MonoBehaviour
     {
         Vector2 directionToTarget = target.position - transform.position;
 
-        if (directionToTarget.sqrMagnitude <= 0.001f)
-        {
-            return;
-        }
+        if (directionToTarget.sqrMagnitude <= 0.001f) return;
 
         float targetAngle = Mathf.Atan2(directionToTarget.y, directionToTarget.x) * Mathf.Rad2Deg - 90f;
         float currentAngle = transform.eulerAngles.z;
@@ -56,10 +66,7 @@ public class EnemyShipController : MonoBehaviour
     {
         float distance = Vector2.Distance(transform.position, target.position);
 
-        if (distance <= stoppingDistance)
-        {
-            return;
-        }
+        if (distance <= stoppingDistance) return;
 
         transform.position += transform.up * moveSpeed * Time.deltaTime;
     }

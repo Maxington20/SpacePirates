@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class ShipHealth : MonoBehaviour
 {
-    [SerializeField] private int maxHealth = 100;
+    [SerializeField] private int fallbackMaxHealth = 100;
     [SerializeField] private GameObject destructionEffectPrefab;
     [SerializeField] private FloatingDamageText floatingDamageTextPrefab;
 
     public int CurrentHealth { get; private set; }
-    public int MaxHealth => maxHealth;
+    public int MaxHealth { get; private set; }
     public bool IsDestroyed { get; private set; }
 
     public event Action<int, int> HealthChanged;
@@ -18,31 +18,30 @@ public class ShipHealth : MonoBehaviour
 
     private void Awake()
     {
-        CurrentHealth = maxHealth;
         damageFlash = GetComponent<DamageFlash>();
+
+        ShipDefinitionHolder holder = GetComponent<ShipDefinitionHolder>();
+        MaxHealth = holder != null && holder.ShipDefinition != null
+            ? holder.ShipDefinition.MaxHull
+            : fallbackMaxHealth;
+
+        CurrentHealth = MaxHealth;
     }
 
     private void Start()
     {
-        HealthChanged?.Invoke(CurrentHealth, maxHealth);
+        HealthChanged?.Invoke(CurrentHealth, MaxHealth);
     }
 
     public void TakeDamage(int amount)
     {
-        if (IsDestroyed)
-        {
-            return;
-        }
+        if (IsDestroyed) return;
 
-        CurrentHealth -= amount;
-        CurrentHealth = Mathf.Max(CurrentHealth, 0);
+        CurrentHealth = Mathf.Max(CurrentHealth - amount, 0);
 
         damageFlash?.Flash();
         SpawnFloatingDamageText(amount);
-
-        HealthChanged?.Invoke(CurrentHealth, maxHealth);
-
-        Debug.Log($"{gameObject.name} took {amount} damage. HP: {CurrentHealth}/{maxHealth}");
+        HealthChanged?.Invoke(CurrentHealth, MaxHealth);
 
         if (CurrentHealth <= 0)
         {
@@ -52,10 +51,7 @@ public class ShipHealth : MonoBehaviour
 
     private void SpawnFloatingDamageText(int amount)
     {
-        if (floatingDamageTextPrefab == null)
-        {
-            return;
-        }
+        if (floatingDamageTextPrefab == null) return;
 
         Vector3 spawnPosition = transform.position + new Vector3(0f, 0.8f, 0f);
         FloatingDamageText damageText = Instantiate(floatingDamageTextPrefab, spawnPosition, Quaternion.identity);
@@ -64,10 +60,7 @@ public class ShipHealth : MonoBehaviour
 
     private void DestroyShip()
     {
-        if (IsDestroyed)
-        {
-            return;
-        }
+        if (IsDestroyed) return;
 
         IsDestroyed = true;
         ShipDestroyed?.Invoke();
@@ -76,8 +69,6 @@ public class ShipHealth : MonoBehaviour
         {
             Instantiate(destructionEffectPrefab, transform.position, Quaternion.identity);
         }
-
-        Debug.Log($"{gameObject.name} destroyed.");
 
         Destroy(gameObject);
     }
