@@ -5,6 +5,7 @@ public class ShipHealth : MonoBehaviour
 {
     [SerializeField] private int maxHealth = 100;
     [SerializeField] private GameObject destructionEffectPrefab;
+    [SerializeField] private FloatingDamageText floatingDamageTextPrefab;
 
     public int CurrentHealth { get; private set; }
     public int MaxHealth => maxHealth;
@@ -37,6 +38,8 @@ public class ShipHealth : MonoBehaviour
         CurrentHealth = Mathf.Max(CurrentHealth, 0);
 
         damageFlash?.Flash();
+        SpawnFloatingDamageText(amount);
+
         HealthChanged?.Invoke(CurrentHealth, maxHealth);
 
         Debug.Log($"{gameObject.name} took {amount} damage. HP: {CurrentHealth}/{maxHealth}");
@@ -45,6 +48,18 @@ public class ShipHealth : MonoBehaviour
         {
             DestroyShip();
         }
+    }
+
+    private void SpawnFloatingDamageText(int amount)
+    {
+        if (floatingDamageTextPrefab == null)
+        {
+            return;
+        }
+
+        Vector3 spawnPosition = transform.position + new Vector3(0f, 0.8f, 0f);
+        FloatingDamageText damageText = Instantiate(floatingDamageTextPrefab, spawnPosition, Quaternion.identity);
+        damageText.Initialize(amount);
     }
 
     private void DestroyShip()

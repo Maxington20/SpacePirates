@@ -523,6 +523,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShipHealth
   maxHealth: 100
   destructionEffectPrefab: {fileID: 191205178173224245, guid: 0655f840f3fd35d4e8bbce353909fc16, type: 3}
+  floatingDamageTextPrefab: {fileID: 6069803462347529160, guid: cd413467f934aa644a4be55d2381147f, type: 3}
 --- !u!61 &1454579602
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -999,6 +1000,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShipHealth
   maxHealth: 100
   destructionEffectPrefab: {fileID: 191205178173224245, guid: 0655f840f3fd35d4e8bbce353909fc16, type: 3}
+  floatingDamageTextPrefab: {fileID: 6069803462347529160, guid: cd413467f934aa644a4be55d2381147f, type: 3}
 --- !u!114 &2001536262
 MonoBehaviour:
   m_ObjectHideFlags: 0
