@@ -109,6 +109,7 @@ public class GalaxySystemSelector : MonoBehaviour
 
         if (selectedSystem.SystemDefinition != null)
         {
+            GameState.SetCurrentSystem(selectedSystem.SystemDefinition);
             Debug.Log($"Travelling to {selectedSystem.SystemDefinition.SystemName}");
         }
 
