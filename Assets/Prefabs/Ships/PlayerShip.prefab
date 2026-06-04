@@ -268,6 +268,8 @@ GameObject:
   - component: {fileID: 1118672312123134386}
   - component: {fileID: 3001147272242155869}
   - component: {fileID: 9214705223327602950}
+  - component: {fileID: -3215956067580437851}
+  - component: {fileID: 4575849615751173195}
   m_Layer: 0
   m_Name: PlayerShip
   m_TagString: Player
@@ -571,3 +573,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FireArcIndicatorController
   indicatorRoot: {fileID: 4140980085404950583}
   showKey: 32
+--- !u!114 &-3215956067580437851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7446172372825288235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b89b0ed7ff489e4b96cf54b17e7e3a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShipCrew
+  fallbackCrewCapacity: 5
+  fallbackStartingCrew: 5
+--- !u!114 &4575849615751173195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7446172372825288235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34fef570fe818d64f907fe7c610dc92a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BoardingController
+  targetingController: {fileID: 0}
+  playerWallet: {fileID: 0}
+  boardingKey: 98
+  boardingRange: 2.5
+  targetHullThreshold: 0.25
+  successCreditReward: 150
+  failureCrewLoss: 1

@@ -22,6 +22,7 @@ public class ShipDefinition : ScriptableObject
 
     [Header("Capacity")]
     [SerializeField] private int crewCapacity = 5;
+    [SerializeField] private int startingCrew = 5;
     [SerializeField] private int cargoCapacity = 10;
 
     public string ShipName => shipName;
@@ -37,5 +38,6 @@ public class ShipDefinition : ScriptableObject
     public float RotationSpeed => rotationSpeed;
 
     public int CrewCapacity => crewCapacity;
+    public int StartingCrew => startingCrew;
     public int CargoCapacity => cargoCapacity;
 }

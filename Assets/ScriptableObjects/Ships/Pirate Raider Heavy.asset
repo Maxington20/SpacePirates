@@ -22,4 +22,5 @@ MonoBehaviour:
   reverseSpeed: 1.75
   rotationSpeed: 95
   crewCapacity: 18
+  startingCrew: 18
   cargoCapacity: 20

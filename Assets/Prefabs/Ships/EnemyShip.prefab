@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 2982151242571249783}
   - component: {fileID: 6074738443044638070}
   - component: {fileID: 1818857925806248452}
+  - component: {fileID: -2938907097934000299}
   m_Layer: 0
   m_Name: EnemyShip
   m_TagString: Untagged
@@ -159,7 +160,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35c5aecc96a04584c8857eea9667e10b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipHealth
-  fallbackMaxHealth: 100
+  fallbackMaxHull: 100
+  fallbackMaxShield: 50
+  fallbackShieldRegenRate: 5
+  fallbackShieldRechargeDelay: 5
   destructionEffectPrefab: {fileID: 191205178173224245, guid: 0655f840f3fd35d4e8bbce353909fc16, type: 3}
   floatingDamageTextPrefab: {fileID: 6069803462347529160, guid: cd413467f934aa644a4be55d2381147f, type: 3}
 --- !u!114 &1114446626365644794
@@ -249,6 +253,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipLoadout
   primaryWeapon: {fileID: 11400000, guid: 88e8a50c1e9e8ef4ca806d744d37c1bf, type: 2}
+--- !u!114 &-2938907097934000299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 265217396433256716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b89b0ed7ff489e4b96cf54b17e7e3a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShipCrew
+  fallbackCrewCapacity: 5
+  fallbackStartingCrew: 5
 --- !u!1 &1549414063692853767
 GameObject:
   m_ObjectHideFlags: 0
