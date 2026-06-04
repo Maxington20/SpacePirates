@@ -171,6 +171,9 @@ public class BoardingController : MonoBehaviour
 
         Debug.Log($"Boarding successful! Captured {target.DisplayName}. Recovered {successCreditReward} credits.");
 
+        GameMessageUI.Instance?.ShowMessage(
+        $"Boarding successful! Captured {target.DisplayName}. +{successCreditReward} credits.");
+
         ShipHealth targetHealth = target.Health;
         if (targetHealth != null && !targetHealth.IsDestroyed)
         {
@@ -186,5 +189,7 @@ public class BoardingController : MonoBehaviour
         }
 
         Debug.Log($"Boarding failed! Lost {failureCrewLoss} crew.");
+        GameMessageUI.Instance?.ShowMessage(
+        $"Boarding failed! Lost {failureCrewLoss} crew.");
     }
 }
