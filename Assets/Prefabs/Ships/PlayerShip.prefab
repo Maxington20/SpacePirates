@@ -143,6 +143,7 @@ GameObject:
   - component: {fileID: 1789137675606047289}
   - component: {fileID: 7359299373029433214}
   - component: {fileID: 1118672312123134386}
+  - component: {fileID: 3001147272242155869}
   m_Layer: 0
   m_Name: PlayerShip
   m_TagString: Player
@@ -287,6 +288,7 @@ MonoBehaviour:
   fallbackForwardSpeed: 6
   fallbackReverseSpeed: 3
   fallbackRotationSpeed: 180
+  boostKey: 304
 --- !u!114 &434374597197960860
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -299,7 +301,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35c5aecc96a04584c8857eea9667e10b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipHealth
-  fallbackMaxHealth: 100
+  fallbackMaxHull: 100
+  fallbackMaxShield: 50
+  fallbackShieldRegenRate: 5
+  fallbackShieldRechargeDelay: 5
   destructionEffectPrefab: {fileID: 191205178173224245, guid: 0655f840f3fd35d4e8bbce353909fc16, type: 3}
   floatingDamageTextPrefab: {fileID: 6069803462347529160, guid: cd413467f934aa644a4be55d2381147f, type: 3}
 --- !u!114 &6592300086413056170
@@ -411,3 +416,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51083d9392acf24408607d7fea6a7c2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCargoHold
+--- !u!114 &3001147272242155869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7446172372825288235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d09384a8832ce14f8615b52ab07e2e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BoostController
+  maxEnergy: 100
+  drainPerSecond: 35
+  regenPerSecond: 5
+  boostSpeedMultiplier: 1.8

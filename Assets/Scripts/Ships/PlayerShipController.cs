@@ -7,12 +7,19 @@ public class PlayerShipController : MonoBehaviour
     [SerializeField] private float fallbackReverseSpeed = 3f;
     [SerializeField] private float fallbackRotationSpeed = 180f;
 
+    [Header("Boost Input")]
+    [SerializeField] private KeyCode boostKey = KeyCode.LeftShift;
+
     private float forwardSpeed;
     private float reverseSpeed;
     private float rotationSpeed;
 
+    private BoostController boostController;
+
     private void Awake()
     {
+        boostController = GetComponent<BoostController>();
+
         ShipDefinitionHolder holder = GetComponent<ShipDefinitionHolder>();
 
         if (holder != null && holder.ShipDefinition != null)
@@ -31,20 +38,43 @@ public class PlayerShipController : MonoBehaviour
 
     private void Update()
     {
-
         if (PlayerState.IsDocked)
         {
+            if (boostController != null)
+            {
+                boostController.SetBoosting(false);
+            }
+
             return;
         }
 
         float thrustInput = 0f;
         float rotationInput = 0f;
 
-        if (Input.GetKey(KeyCode.W)) thrustInput = 1f;
-        else if (Input.GetKey(KeyCode.S)) thrustInput = -1f;
+        if (Input.GetKey(KeyCode.W))
+        {
+            thrustInput = 1f;
+        }
+        else if (Input.GetKey(KeyCode.S))
+        {
+            thrustInput = -1f;
+        }
 
-        if (Input.GetKey(KeyCode.A)) rotationInput = 1f;
-        else if (Input.GetKey(KeyCode.D)) rotationInput = -1f;
+        if (Input.GetKey(KeyCode.A))
+        {
+            rotationInput = 1f;
+        }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            rotationInput = -1f;
+        }
+
+        bool wantsBoost = Input.GetKey(boostKey) && thrustInput > 0f;
+
+        if (boostController != null)
+        {
+            boostController.SetBoosting(wantsBoost);
+        }
 
         if (!Mathf.Approximately(rotationInput, 0f))
         {
@@ -54,7 +84,17 @@ public class PlayerShipController : MonoBehaviour
         if (!Mathf.Approximately(thrustInput, 0f))
         {
             float speed = thrustInput > 0f ? forwardSpeed : reverseSpeed;
+
+            if (boostController != null && boostController.IsBoosting)
+            {
+                speed *= boostController.BoostSpeedMultiplier;
+            }
+
             transform.position += transform.up * thrustInput * speed * Time.deltaTime;
+        }
+        else if (boostController != null)
+        {
+            boostController.SetBoosting(false);
         }
     }
 }
