@@ -8,10 +8,12 @@ public class TargetFrameUI : MonoBehaviour
     [SerializeField] private TargetingController targetingController;
     [SerializeField] private GameObject root;
     [SerializeField] private TMP_Text nameText;
+    [SerializeField] private TMP_Text crewText;
     [SerializeField] private Image shieldFillImage;
     [SerializeField] private Image hullFillImage;
 
     private Targetable currentTarget;
+    private ShipCrew currentTargetCrew;
 
     private void Start()
     {
@@ -38,12 +40,18 @@ public class TargetFrameUI : MonoBehaviour
         UnsubscribeFromCurrentTarget();
 
         currentTarget = target;
+        currentTargetCrew = target != null ? target.GetComponent<ShipCrew>() : null;
 
         if (currentTarget != null && currentTarget.Health != null)
         {
             currentTarget.Health.HullChanged += HandleTargetHullChanged;
             currentTarget.Health.ShieldChanged += HandleTargetShieldChanged;
             currentTarget.Health.ShipDestroyed += HandleTargetDestroyed;
+        }
+
+        if (currentTargetCrew != null)
+        {
+            currentTargetCrew.CrewChanged += HandleTargetCrewChanged;
         }
 
         Refresh(currentTarget);
@@ -57,6 +65,11 @@ public class TargetFrameUI : MonoBehaviour
     private void HandleTargetShieldChanged(float currentShield, int maxShield)
     {
         UpdateShieldBar(currentShield, maxShield);
+    }
+
+    private void HandleTargetCrewChanged(int currentCrew, int crewCapacity)
+    {
+        UpdateCrewText(currentCrew, crewCapacity);
     }
 
     private void HandleTargetDestroyed()
@@ -91,6 +104,15 @@ public class TargetFrameUI : MonoBehaviour
             UpdateHullBar(target.Health.CurrentHull, target.Health.MaxHull);
             UpdateShieldBar(target.Health.CurrentShield, target.Health.MaxShield);
         }
+
+        if (currentTargetCrew != null)
+        {
+            UpdateCrewText(currentTargetCrew.CurrentCrew, currentTargetCrew.CrewCapacity);
+        }
+        else if (crewText != null)
+        {
+            crewText.text = "";
+        }
     }
 
     private void UpdateHullBar(int currentHull, int maxHull)
@@ -113,15 +135,28 @@ public class TargetFrameUI : MonoBehaviour
         shieldFillImage.fillAmount = currentShield / maxShield;
     }
 
+    private void UpdateCrewText(int currentCrew, int crewCapacity)
+    {
+        if (crewText != null)
+        {
+            crewText.text = $"Crew: {currentCrew}/{crewCapacity}";
+        }
+    }
+
     private void UnsubscribeFromCurrentTarget()
     {
-        if (currentTarget == null || currentTarget.Health == null)
+        if (currentTarget != null && currentTarget.Health != null)
         {
-            return;
+            currentTarget.Health.HullChanged -= HandleTargetHullChanged;
+            currentTarget.Health.ShieldChanged -= HandleTargetShieldChanged;
+            currentTarget.Health.ShipDestroyed -= HandleTargetDestroyed;
         }
 
-        currentTarget.Health.HullChanged -= HandleTargetHullChanged;
-        currentTarget.Health.ShieldChanged -= HandleTargetShieldChanged;
-        currentTarget.Health.ShipDestroyed -= HandleTargetDestroyed;
+        if (currentTargetCrew != null)
+        {
+            currentTargetCrew.CrewChanged -= HandleTargetCrewChanged;
+        }
+
+        currentTargetCrew = null;
     }
 }
