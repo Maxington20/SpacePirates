@@ -89,9 +89,16 @@ public class MarketUI : MonoBehaviour
             MarketItemRow row = Instantiate(marketItemRowPrefab, goodsContainer);
 
             int buyPrice = stationMarket.GetBuyPrice(item);
+            int sellPrice = stationMarket.GetSellPrice(item);
             int ownedQuantity = currentCargoHold.GetQuantity(item);
 
-            row.Initialize(item, buyPrice, ownedQuantity, HandleBuyRequested);
+            row.Initialize(
+                item,
+                buyPrice,
+                sellPrice,
+                ownedQuantity,
+                HandleBuyRequested,
+                HandleSellRequested);
         }
     }
 
@@ -137,6 +144,33 @@ public class MarketUI : MonoBehaviour
         }
 
         currentWallet.SpendCredits(price);
+
+        Refresh(currentWallet, currentCargoHold);
+        BuildGoodsList();
+    }
+
+    private void HandleSellRequested(CargoItemDefinition item)
+    {
+        if (currentStation == null || currentWallet == null || currentCargoHold == null)
+        {
+            return;
+        }
+
+        StationMarket stationMarket = currentStation.GetComponent<StationMarket>();
+
+        if (stationMarket == null)
+        {
+            return;
+        }
+
+        if (!currentCargoHold.RemoveCargo(item, 1))
+        {
+            Debug.Log("No cargo to sell.");
+            return;
+        }
+
+        int sellPrice = stationMarket.GetSellPrice(item);
+        currentWallet.AddCredits(sellPrice);
 
         Refresh(currentWallet, currentCargoHold);
         BuildGoodsList();
