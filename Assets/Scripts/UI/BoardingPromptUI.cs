@@ -26,11 +26,6 @@ public class BoardingPromptUI : MonoBehaviour
             }
         }
 
-        if (promptText != null)
-        {
-            promptText.text = "Press B to Board";
-        }
-
         Hide();
     }
 
@@ -44,7 +39,8 @@ public class BoardingPromptUI : MonoBehaviour
 
         if (boardingController.CanBoardCurrentTarget)
         {
-            Show();
+            int chance = boardingController.GetCurrentBoardingChancePercent();
+            Show(chance);
         }
         else
         {
@@ -52,8 +48,13 @@ public class BoardingPromptUI : MonoBehaviour
         }
     }
 
-    private void Show()
+    private void Show(int chancePercent)
     {
+        if (promptText != null)
+        {
+            promptText.text = $"Press B to Board — {chancePercent}% chance";
+        }
+
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = false;
         canvasGroup.interactable = false;

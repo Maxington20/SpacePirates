@@ -45,6 +45,19 @@ public class BoardingController : MonoBehaviour
         }
     }
 
+    public int GetCurrentBoardingChancePercent()
+    {
+        Targetable target = GetCurrentTarget();
+
+        if (!CanBoard(target, out _))
+        {
+            return 0;
+        }
+
+        float chance = CalculateBoardingChance(target);
+        return Mathf.RoundToInt(chance * 100f);
+    }
+
     private Targetable GetCurrentTarget()
     {
         return targetingController != null ? targetingController.CurrentTarget : null;
@@ -118,7 +131,7 @@ public class BoardingController : MonoBehaviour
         return true;
     }
 
-    private void ResolveBoarding(Targetable target)
+    private float CalculateBoardingChance(Targetable target)
     {
         ShipCrew targetCrew = target.GetComponent<ShipCrew>();
         ShipHealth targetHealth = target.Health;
@@ -132,7 +145,12 @@ public class BoardingController : MonoBehaviour
             ? Mathf.Max(1f, targetCrew.CurrentCrew * targetHullPercent)
             : 1f;
 
-        float successChance = playerStrength / (playerStrength + enemyStrength);
+        return playerStrength / (playerStrength + enemyStrength);
+    }
+
+    private void ResolveBoarding(Targetable target)
+    {
+        float successChance = CalculateBoardingChance(target);
 
         if (Random.value <= successChance)
         {

@@ -6,8 +6,10 @@ public class PlayerStatusUI : MonoBehaviour
 {
     [SerializeField] private ShipHealth playerHealth;
     [SerializeField] private BoostController boostController;
+    [SerializeField] private ShipCrew shipCrew;
 
     [SerializeField] private TMP_Text shipNameText;
+    [SerializeField] private TMP_Text crewText;
     [SerializeField] private Image shieldFillImage;
     [SerializeField] private Image hullFillImage;
     [SerializeField] private Image boostFillImage;
@@ -24,6 +26,11 @@ public class PlayerStatusUI : MonoBehaviour
         if (boostController == null && player != null)
         {
             boostController = player.GetComponent<BoostController>();
+        }
+
+        if (shipCrew == null && player != null)
+        {
+            shipCrew = player.GetComponent<ShipCrew>();
         }
 
         if (playerHealth != null)
@@ -46,6 +53,12 @@ public class PlayerStatusUI : MonoBehaviour
             boostController.EnergyChanged += HandleBoostChanged;
             HandleBoostChanged(boostController.CurrentEnergy, boostController.MaxEnergy);
         }
+
+        if (shipCrew != null)
+        {
+            shipCrew.CrewChanged += HandleCrewChanged;
+            HandleCrewChanged(shipCrew.CurrentCrew, shipCrew.CrewCapacity);
+        }
     }
 
     private void OnDestroy()
@@ -59,6 +72,11 @@ public class PlayerStatusUI : MonoBehaviour
         if (boostController != null)
         {
             boostController.EnergyChanged -= HandleBoostChanged;
+        }
+
+        if (shipCrew != null)
+        {
+            shipCrew.CrewChanged -= HandleCrewChanged;
         }
     }
 
@@ -83,6 +101,14 @@ public class PlayerStatusUI : MonoBehaviour
         if (boostFillImage != null && maxEnergy > 0)
         {
             boostFillImage.fillAmount = currentEnergy / maxEnergy;
+        }
+    }
+
+    private void HandleCrewChanged(int currentCrew, int crewCapacity)
+    {
+        if (crewText != null)
+        {
+            crewText.text = $"Crew: {currentCrew}/{crewCapacity}";
         }
     }
 }
