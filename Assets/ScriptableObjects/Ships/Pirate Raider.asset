@@ -15,6 +15,9 @@ MonoBehaviour:
   shipName: Pirate Raider
   shipClass: Raider
   maxHull: 80
+  maxShield: 40
+  shieldRegenRate: 4
+  shieldRechargeDelay: 5
   forwardSpeed: 4
   reverseSpeed: 2
   rotationSpeed: 120

@@ -15,6 +15,9 @@ MonoBehaviour:
   shipName: Pirate Raider Heavy
   shipClass: Heavy Raider
   maxHull: 160
+  maxShield: 100
+  shieldRegenRate: 3
+  shieldRechargeDelay: 7
   forwardSpeed: 3.5
   reverseSpeed: 1.75
   rotationSpeed: 95

@@ -8,6 +8,7 @@ public class TargetFrameUI : MonoBehaviour
     [SerializeField] private TargetingController targetingController;
     [SerializeField] private GameObject root;
     [SerializeField] private TMP_Text nameText;
+    [SerializeField] private Image shieldFillImage;
     [SerializeField] private Image hullFillImage;
 
     private Targetable currentTarget;
@@ -40,16 +41,22 @@ public class TargetFrameUI : MonoBehaviour
 
         if (currentTarget != null && currentTarget.Health != null)
         {
-            currentTarget.Health.HealthChanged += HandleTargetHealthChanged;
+            currentTarget.Health.HullChanged += HandleTargetHullChanged;
+            currentTarget.Health.ShieldChanged += HandleTargetShieldChanged;
             currentTarget.Health.ShipDestroyed += HandleTargetDestroyed;
         }
 
         Refresh(currentTarget);
     }
 
-    private void HandleTargetHealthChanged(int currentHealth, int maxHealth)
+    private void HandleTargetHullChanged(int currentHull, int maxHull)
     {
-        UpdateHealthBar(currentHealth, maxHealth);
+        UpdateHullBar(currentHull, maxHull);
+    }
+
+    private void HandleTargetShieldChanged(float currentShield, int maxShield)
+    {
+        UpdateShieldBar(currentShield, maxShield);
     }
 
     private void HandleTargetDestroyed()
@@ -81,18 +88,29 @@ public class TargetFrameUI : MonoBehaviour
 
         if (target.Health != null)
         {
-            UpdateHealthBar(target.Health.CurrentHealth, target.Health.MaxHealth);
+            UpdateHullBar(target.Health.CurrentHull, target.Health.MaxHull);
+            UpdateShieldBar(target.Health.CurrentShield, target.Health.MaxShield);
         }
     }
 
-    private void UpdateHealthBar(int currentHealth, int maxHealth)
+    private void UpdateHullBar(int currentHull, int maxHull)
     {
-        if (hullFillImage == null || maxHealth <= 0)
+        if (hullFillImage == null || maxHull <= 0)
         {
             return;
         }
 
-        hullFillImage.fillAmount = (float)currentHealth / maxHealth;
+        hullFillImage.fillAmount = (float)currentHull / maxHull;
+    }
+
+    private void UpdateShieldBar(float currentShield, int maxShield)
+    {
+        if (shieldFillImage == null || maxShield <= 0)
+        {
+            return;
+        }
+
+        shieldFillImage.fillAmount = currentShield / maxShield;
     }
 
     private void UnsubscribeFromCurrentTarget()
@@ -102,7 +120,8 @@ public class TargetFrameUI : MonoBehaviour
             return;
         }
 
-        currentTarget.Health.HealthChanged -= HandleTargetHealthChanged;
+        currentTarget.Health.HullChanged -= HandleTargetHullChanged;
+        currentTarget.Health.ShieldChanged -= HandleTargetShieldChanged;
         currentTarget.Health.ShipDestroyed -= HandleTargetDestroyed;
     }
 }
