@@ -252,7 +252,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 456f1afae138a02459748efc80d0b046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipLoadout
-  primaryWeapon: {fileID: 11400000, guid: 88e8a50c1e9e8ef4ca806d744d37c1bf, type: 2}
+  primaryWeapon: {fileID: 11400000, guid: 7ba9a19aa5abbfc46af8e2f4d98ee722, type: 2}
 --- !u!114 &-2938907097934000299
 MonoBehaviour:
   m_ObjectHideFlags: 0

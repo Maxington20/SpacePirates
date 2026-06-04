@@ -13,6 +13,8 @@ public class BoardingController : MonoBehaviour
     [SerializeField] private int successCreditReward = 150;
     [SerializeField] private int failureCrewLoss = 1;
 
+    public bool CanBoardCurrentTarget => CanBoard(GetCurrentTarget(), out _);
+
     private ShipCrew playerCrew;
 
     private void Awake()
@@ -43,9 +45,14 @@ public class BoardingController : MonoBehaviour
         }
     }
 
+    private Targetable GetCurrentTarget()
+    {
+        return targetingController != null ? targetingController.CurrentTarget : null;
+    }
+
     private void TryBoardTarget()
     {
-        Targetable target = targetingController != null ? targetingController.CurrentTarget : null;
+        Targetable target = GetCurrentTarget();
 
         if (!CanBoard(target, out string reason))
         {
@@ -66,8 +73,7 @@ public class BoardingController : MonoBehaviour
             return false;
         }
 
-        Station station = target.GetComponent<Station>();
-        if (station != null)
+        if (target.GetComponent<Station>() != null)
         {
             reason = "You cannot board a station.";
             return false;
@@ -80,7 +86,7 @@ public class BoardingController : MonoBehaviour
             return false;
         }
 
-        if (targetHealth.CurrentShield > 0f)
+        if (targetHealth.CurrentShield > 0.5f)
         {
             reason = "Target shields must be down before boarding.";
             return false;
@@ -103,16 +109,10 @@ public class BoardingController : MonoBehaviour
             return false;
         }
 
-        ShipCrew targetCrew = target.GetComponent<ShipCrew>();
         if (playerCrew == null || playerCrew.CurrentCrew <= 0)
         {
             reason = "You have no crew available for boarding.";
             return false;
-        }
-
-        if (targetCrew == null || targetCrew.CurrentCrew <= 0)
-        {
-            return true;
         }
 
         return true;
@@ -133,9 +133,8 @@ public class BoardingController : MonoBehaviour
             : 1f;
 
         float successChance = playerStrength / (playerStrength + enemyStrength);
-        float roll = Random.value;
 
-        if (roll <= successChance)
+        if (Random.value <= successChance)
         {
             HandleBoardingSuccess(target);
         }
