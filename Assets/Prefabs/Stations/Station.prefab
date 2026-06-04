@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4893489625952168040}
   - component: {fileID: 3421213875502248362}
   - component: {fileID: 6571969287020191855}
+  - component: {fileID: 5304598470221687137}
   m_Layer: 0
   m_Name: Station
   m_TagString: Untagged
@@ -174,3 +175,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Targetable
   fallbackDisplayName: Station
   isTargetable: 1
+--- !u!114 &5304598470221687137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6803388140383679649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83d07eff1b7716641b70b9eff957af9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StationMarket
+  availableGoods:
+  - {fileID: 11400000, guid: 5433ee478652fd14a9c8e3f0ec901dd3, type: 2}
+  - {fileID: 11400000, guid: 6aa293e8db29aa040aa027af50dccdf8, type: 2}
+  - {fileID: 11400000, guid: 1e84dfa8dde75b64694b6d7a7ebce62f, type: 2}
+  - {fileID: 11400000, guid: 5e83481cd0381c8428ad8f0649963a7c, type: 2}
+  priceMultiplier: 1

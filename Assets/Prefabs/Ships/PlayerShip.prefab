@@ -141,6 +141,8 @@ GameObject:
   - component: {fileID: -3982002530111687922}
   - component: {fileID: 6166465776743510553}
   - component: {fileID: 1789137675606047289}
+  - component: {fileID: 7359299373029433214}
+  - component: {fileID: 1118672312123134386}
   m_Layer: 0
   m_Name: PlayerShip
   m_TagString: Player
@@ -382,4 +384,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StationDockingController
   targetingController: {fileID: 3671943067459681943}
+  stationUI: {fileID: 0}
   dockKey: 101
+--- !u!114 &7359299373029433214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7446172372825288235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01cc996b1876de64282cc2c2aa9717ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerWallet
+  startingCredits: 500
+--- !u!114 &1118672312123134386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7446172372825288235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51083d9392acf24408607d7fea6a7c2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCargoHold

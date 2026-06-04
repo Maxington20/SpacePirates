@@ -6,12 +6,18 @@ public class StationDockingController : MonoBehaviour
     [SerializeField] private StationUI stationUI;
     [SerializeField] private KeyCode dockKey = KeyCode.E;
 
+    private PlayerWallet playerWallet;
+    private PlayerCargoHold playerCargoHold;
+
     private void Awake()
     {
         if (targetingController == null)
         {
             targetingController = GetComponent<TargetingController>();
         }
+
+        playerWallet = GetComponent<PlayerWallet>();
+        playerCargoHold = GetComponent<PlayerCargoHold>();
     }
 
     private void Update()
@@ -51,11 +57,6 @@ public class StationDockingController : MonoBehaviour
             return;
         }
 
-        Debug.Log($"Docked at {station.StationName}.");
-
-        if (stationUI != null)
-        {
-            stationUI.Show(station);
-        }
+        stationUI.Show(station, playerWallet, playerCargoHold);
     }
 }
