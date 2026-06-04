@@ -9,6 +9,10 @@ public class ShipHealth : MonoBehaviour
     [SerializeField] private float fallbackShieldRegenRate = 5f;
     [SerializeField] private float fallbackShieldRechargeDelay = 5f;
 
+    [Header("Crew Damage")]
+    [SerializeField] private bool crewCanBeDamaged = true;
+    [SerializeField] private int hullDamagePerCrewLossChance = 50;
+
     [Header("Effects")]
     [SerializeField] private GameObject destructionEffectPrefab;
     [SerializeField] private FloatingDamageText floatingDamageTextPrefab;
@@ -26,6 +30,8 @@ public class ShipHealth : MonoBehaviour
     public event Action ShipDestroyed;
 
     private DamageFlash damageFlash;
+    private ShipCrew shipCrew;
+
     private float shieldRegenRate;
     private float shieldRechargeDelay;
     private float lastDamageTime;
@@ -33,6 +39,7 @@ public class ShipHealth : MonoBehaviour
     private void Awake()
     {
         damageFlash = GetComponent<DamageFlash>();
+        shipCrew = GetComponent<ShipCrew>();
 
         ShipDefinitionHolder holder = GetComponent<ShipDefinitionHolder>();
 
@@ -77,6 +84,7 @@ public class ShipHealth : MonoBehaviour
         damageFlash?.Flash();
 
         int remainingDamage = amount;
+        int hullDamageTaken = 0;
 
         if (CurrentShield > 0f)
         {
@@ -89,8 +97,14 @@ public class ShipHealth : MonoBehaviour
 
         if (remainingDamage > 0)
         {
+            int previousHull = CurrentHull;
+
             CurrentHull = Mathf.Max(CurrentHull - remainingDamage, 0);
+            hullDamageTaken = previousHull - CurrentHull;
+
             HullChanged?.Invoke(CurrentHull, MaxHull);
+
+            TryDamageCrewFromHullDamage(hullDamageTaken);
 
             if (CurrentHull <= 0)
             {
@@ -101,19 +115,29 @@ public class ShipHealth : MonoBehaviour
         SpawnFloatingDamageText(amount);
     }
 
+    private void TryDamageCrewFromHullDamage(int hullDamageTaken)
+    {
+        if (!crewCanBeDamaged || shipCrew == null || hullDamageTaken <= 0)
+        {
+            return;
+        }
+
+        float crewLossChance = Mathf.Clamp01((float)hullDamageTaken / hullDamagePerCrewLossChance);
+
+        if (UnityEngine.Random.value <= crewLossChance)
+        {
+            shipCrew.LoseCrew(1);
+
+            if (GameMessageUI.Instance != null && gameObject.CompareTag("Player"))
+            {
+                GameMessageUI.Instance.ShowMessage("Crew casualty! Lost 1 crew.");
+            }
+        }
+    }
+
     private void RegenerateShield()
     {
-        if (IsDestroyed)
-        {
-            return;
-        }
-
-        if (MaxShield <= 0)
-        {
-            return;
-        }
-
-        if (CurrentShield >= MaxShield)
+        if (IsDestroyed || MaxShield <= 0 || CurrentShield >= MaxShield)
         {
             return;
         }
