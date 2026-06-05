@@ -13,6 +13,10 @@ public class ShipHealth : MonoBehaviour
     [SerializeField] private bool crewCanBeDamaged = true;
     [SerializeField] private int hullDamagePerCrewLossChance = 50;
 
+    [Header("System Damage")]
+    [SerializeField] private bool systemsCanBeDamaged = true;
+    [SerializeField] private float hullDamageForSystemDamageChance = 75f;
+
     [Header("Effects")]
     [SerializeField] private GameObject destructionEffectPrefab;
     [SerializeField] private FloatingDamageText floatingDamageTextPrefab;
@@ -31,6 +35,7 @@ public class ShipHealth : MonoBehaviour
 
     private DamageFlash damageFlash;
     private ShipCrew shipCrew;
+    private ShipSystemDamage systemDamage;
 
     private float shieldRegenRate;
     private float shieldRechargeDelay;
@@ -40,6 +45,7 @@ public class ShipHealth : MonoBehaviour
     {
         damageFlash = GetComponent<DamageFlash>();
         shipCrew = GetComponent<ShipCrew>();
+        systemDamage = GetComponent<ShipSystemDamage>();
 
         ShipDefinitionHolder holder = GetComponent<ShipDefinitionHolder>();
 
@@ -105,6 +111,7 @@ public class ShipHealth : MonoBehaviour
             HullChanged?.Invoke(CurrentHull, MaxHull);
 
             TryDamageCrewFromHullDamage(hullDamageTaken);
+            TryDamageShipSystem(hullDamageTaken);
 
             if (CurrentHull <= 0)
             {
@@ -135,9 +142,36 @@ public class ShipHealth : MonoBehaviour
         }
     }
 
+    private void TryDamageShipSystem(int hullDamageTaken)
+    {
+        if (!systemsCanBeDamaged || systemDamage == null || hullDamageTaken <= 0)
+        {
+            return;
+        }
+
+        if (systemDamage.EnginesDamaged &&
+            systemDamage.WeaponsDamaged &&
+            systemDamage.ShieldsDamaged)
+        {
+            return;
+        }
+
+        float damageChance = Mathf.Clamp01(hullDamageTaken / hullDamageForSystemDamageChance);
+
+        if (UnityEngine.Random.value <= damageChance)
+        {
+            systemDamage.DamageRandomSystem();
+        }
+    }
+
     private void RegenerateShield()
     {
         if (IsDestroyed || MaxShield <= 0 || CurrentShield >= MaxShield)
+        {
+            return;
+        }
+
+        if (systemDamage != null && systemDamage.ShieldsDamaged)
         {
             return;
         }

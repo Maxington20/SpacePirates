@@ -270,6 +270,7 @@ GameObject:
   - component: {fileID: 9214705223327602950}
   - component: {fileID: -3215956067580437851}
   - component: {fileID: 4575849615751173195}
+  - component: {fileID: 6628526509503087863}
   m_Layer: 0
   m_Name: PlayerShip
   m_TagString: Player
@@ -432,6 +433,8 @@ MonoBehaviour:
   fallbackMaxShield: 50
   fallbackShieldRegenRate: 5
   fallbackShieldRechargeDelay: 5
+  crewCanBeDamaged: 1
+  hullDamagePerCrewLossChance: 50
   destructionEffectPrefab: {fileID: 191205178173224245, guid: 0655f840f3fd35d4e8bbce353909fc16, type: 3}
   floatingDamageTextPrefab: {fileID: 6069803462347529160, guid: cd413467f934aa644a4be55d2381147f, type: 3}
 --- !u!114 &6592300086413056170
@@ -606,3 +609,15 @@ MonoBehaviour:
   targetHullThreshold: 0.25
   successCreditReward: 150
   failureCrewLoss: 1
+--- !u!114 &6628526509503087863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7446172372825288235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf7aa5586983d5c498e04b637de9ccf6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShipSystemDamage

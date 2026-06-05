@@ -6,11 +6,13 @@ public class PlayerWeaponController : MonoBehaviour
     [SerializeField] private Transform firePoint;
 
     private ShipLoadout shipLoadout;
+    private ShipSystemDamage systemDamage;
     private float nextFireTime;
 
     private void Awake()
     {
         shipLoadout = GetComponent<ShipLoadout>();
+        systemDamage = GetComponent<ShipSystemDamage>();
     }
 
     private void Update()
@@ -34,6 +36,11 @@ public class PlayerWeaponController : MonoBehaviour
 
         WeaponDefinition weapon = shipLoadout != null ? shipLoadout.PrimaryWeapon : null;
         float cooldown = weapon != null ? weapon.FireCooldown : 0.25f;
+
+        if (systemDamage != null && systemDamage.WeaponsDamaged)
+        {
+            cooldown *= 1.75f;
+        }
 
         nextFireTime = Time.time + cooldown;
     }
