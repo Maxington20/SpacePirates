@@ -12,8 +12,14 @@ public class TargetFrameUI : MonoBehaviour
     [SerializeField] private Image shieldFillImage;
     [SerializeField] private Image hullFillImage;
 
+    [Header("System Status Rows")]
+    [SerializeField] private SystemStatusRowUI enginesRow;
+    [SerializeField] private SystemStatusRowUI weaponsRow;
+    [SerializeField] private SystemStatusRowUI shieldsRow;
+
     private Targetable currentTarget;
     private ShipCrew currentTargetCrew;
+    private ShipSystemDamage currentTargetSystemDamage;
 
     private void Start()
     {
@@ -41,6 +47,7 @@ public class TargetFrameUI : MonoBehaviour
 
         currentTarget = target;
         currentTargetCrew = target != null ? target.GetComponent<ShipCrew>() : null;
+        currentTargetSystemDamage = target != null ? target.GetComponent<ShipSystemDamage>() : null;
 
         if (currentTarget != null && currentTarget.Health != null)
         {
@@ -52,6 +59,11 @@ public class TargetFrameUI : MonoBehaviour
         if (currentTargetCrew != null)
         {
             currentTargetCrew.CrewChanged += HandleTargetCrewChanged;
+        }
+
+        if (currentTargetSystemDamage != null)
+        {
+            currentTargetSystemDamage.SystemsChanged += HandleTargetSystemsChanged;
         }
 
         Refresh(currentTarget);
@@ -70,6 +82,11 @@ public class TargetFrameUI : MonoBehaviour
     private void HandleTargetCrewChanged(int currentCrew, int crewCapacity)
     {
         UpdateCrewText(currentCrew, crewCapacity);
+    }
+
+    private void HandleTargetSystemsChanged()
+    {
+        UpdateSystemRows();
     }
 
     private void HandleTargetDestroyed()
@@ -113,6 +130,8 @@ public class TargetFrameUI : MonoBehaviour
         {
             crewText.text = "";
         }
+
+        UpdateSystemRows();
     }
 
     private void UpdateHullBar(int currentHull, int maxHull)
@@ -143,6 +162,21 @@ public class TargetFrameUI : MonoBehaviour
         }
     }
 
+    private void UpdateSystemRows()
+    {
+        if (currentTargetSystemDamage == null)
+        {
+            enginesRow?.SetStatus("ENG", ShipSystemState.Operational);
+            weaponsRow?.SetStatus("WPN", ShipSystemState.Operational);
+            shieldsRow?.SetStatus("SHD", ShipSystemState.Operational);
+            return;
+        }
+
+        enginesRow?.SetStatus("ENG", currentTargetSystemDamage.EnginesState);
+        weaponsRow?.SetStatus("WPN", currentTargetSystemDamage.WeaponsState);
+        shieldsRow?.SetStatus("SHD", currentTargetSystemDamage.ShieldsState);
+    }
+
     private void UnsubscribeFromCurrentTarget()
     {
         if (currentTarget != null && currentTarget.Health != null)
@@ -157,6 +191,12 @@ public class TargetFrameUI : MonoBehaviour
             currentTargetCrew.CrewChanged -= HandleTargetCrewChanged;
         }
 
+        if (currentTargetSystemDamage != null)
+        {
+            currentTargetSystemDamage.SystemsChanged -= HandleTargetSystemsChanged;
+        }
+
         currentTargetCrew = null;
+        currentTargetSystemDamage = null;
     }
 }

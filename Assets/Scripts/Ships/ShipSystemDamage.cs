@@ -3,16 +3,24 @@ using UnityEngine;
 
 public class ShipSystemDamage : MonoBehaviour
 {
-    public bool EnginesDamaged { get; private set; }
-    public bool WeaponsDamaged { get; private set; }
-    public bool ShieldsDamaged { get; private set; }
+    public ShipSystemState EnginesState { get; private set; } = ShipSystemState.Operational;
+    public ShipSystemState WeaponsState { get; private set; } = ShipSystemState.Operational;
+    public ShipSystemState ShieldsState { get; private set; } = ShipSystemState.Operational;
 
     public event Action SystemsChanged;
 
     public bool HasAnyDamage =>
-        EnginesDamaged ||
-        WeaponsDamaged ||
-        ShieldsDamaged;
+        EnginesState != ShipSystemState.Operational ||
+        WeaponsState != ShipSystemState.Operational ||
+        ShieldsState != ShipSystemState.Operational;
+
+    public bool EnginesDamaged => EnginesState != ShipSystemState.Operational;
+    public bool WeaponsDamaged => WeaponsState != ShipSystemState.Operational;
+    public bool ShieldsDamaged => ShieldsState != ShipSystemState.Operational;
+
+    public bool EnginesFailed => EnginesState == ShipSystemState.Failed;
+    public bool WeaponsFailed => WeaponsState == ShipSystemState.Failed;
+    public bool ShieldsFailed => ShieldsState == ShipSystemState.Failed;
 
     public void DamageRandomSystem()
     {
@@ -25,61 +33,66 @@ public class ShipSystemDamage : MonoBehaviour
 
         for (int attempt = 0; attempt < 10; attempt++)
         {
-            ShipSystemType selected =
-                candidates[UnityEngine.Random.Range(0, candidates.Length)];
+            ShipSystemType selected = candidates[UnityEngine.Random.Range(0, candidates.Length)];
 
-            if (TryDamageSystem(selected))
+            if (TryWorsenSystem(selected))
             {
                 return;
             }
         }
     }
 
-    private bool TryDamageSystem(ShipSystemType system)
+    public ShipSystemState GetSystemState(ShipSystemType systemType)
     {
-        switch (system)
+        return systemType switch
         {
-            case ShipSystemType.Engines:
+            ShipSystemType.Engines => EnginesState,
+            ShipSystemType.Weapons => WeaponsState,
+            ShipSystemType.Shields => ShieldsState,
+            _ => ShipSystemState.Operational
+        };
+    }
 
-                if (EnginesDamaged)
-                {
-                    return false;
-                }
+    private bool TryWorsenSystem(ShipSystemType systemType)
+    {
+        ShipSystemState currentState = GetSystemState(systemType);
 
-                EnginesDamaged = true;
-                break;
-
-            case ShipSystemType.Weapons:
-
-                if (WeaponsDamaged)
-                {
-                    return false;
-                }
-
-                WeaponsDamaged = true;
-                break;
-
-            case ShipSystemType.Shields:
-
-                if (ShieldsDamaged)
-                {
-                    return false;
-                }
-
-                ShieldsDamaged = true;
-                break;
-
-            default:
-                return false;
+        if (currentState == ShipSystemState.Failed)
+        {
+            return false;
         }
 
-        SystemsChanged?.Invoke();
+        ShipSystemState newState = currentState == ShipSystemState.Operational
+            ? ShipSystemState.Damaged
+            : ShipSystemState.Failed;
+
+        SetSystemState(systemType, newState);
 
         if (CompareTag("Player"))
         {
-            GameMessageUI.Instance?.ShowMessage($"{system} damaged!");
+            GameMessageUI.Instance?.ShowMessage($"{systemType} {newState}!");
         }
 
         return true;
+    }
+
+    private void SetSystemState(ShipSystemType systemType, ShipSystemState state)
+    {
+        switch (systemType)
+        {
+            case ShipSystemType.Engines:
+                EnginesState = state;
+                break;
+
+            case ShipSystemType.Weapons:
+                WeaponsState = state;
+                break;
+
+            case ShipSystemType.Shields:
+                ShieldsState = state;
+                break;
+        }
+
+        SystemsChanged?.Invoke();
     }
 }

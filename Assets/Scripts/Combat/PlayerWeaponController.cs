@@ -27,6 +27,11 @@ public class PlayerWeaponController : MonoBehaviour
             return;
         }
 
+        if (systemDamage != null && systemDamage.WeaponsFailed)
+        {
+            return;
+        }
+
         if (Time.time < nextFireTime)
         {
             return;
@@ -39,7 +44,7 @@ public class PlayerWeaponController : MonoBehaviour
 
         if (systemDamage != null && systemDamage.WeaponsDamaged)
         {
-            cooldown *= 1.75f;
+            cooldown *= 1.5f;
         }
 
         nextFireTime = Time.time + cooldown;

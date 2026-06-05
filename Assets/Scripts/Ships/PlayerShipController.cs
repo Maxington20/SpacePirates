@@ -42,11 +42,7 @@ public class PlayerShipController : MonoBehaviour
     {
         if (PlayerState.IsDocked)
         {
-            if (boostController != null)
-            {
-                boostController.SetBoosting(false);
-            }
-
+            boostController?.SetBoosting(false);
             return;
         }
 
@@ -72,11 +68,7 @@ public class PlayerShipController : MonoBehaviour
         }
 
         bool wantsBoost = Input.GetKey(boostKey) && thrustInput > 0f;
-
-        if (boostController != null)
-        {
-            boostController.SetBoosting(wantsBoost);
-        }
+        boostController?.SetBoosting(wantsBoost);
 
         if (!Mathf.Approximately(rotationInput, 0f))
         {
@@ -86,11 +78,7 @@ public class PlayerShipController : MonoBehaviour
         if (!Mathf.Approximately(thrustInput, 0f))
         {
             float speed = thrustInput > 0f ? forwardSpeed : reverseSpeed;
-
-            if (systemDamage != null && systemDamage.EnginesDamaged)
-            {
-                speed *= 0.6f;
-            }
+            speed *= GetEngineSpeedMultiplier();
 
             if (boostController != null && boostController.IsBoosting)
             {
@@ -99,9 +87,29 @@ public class PlayerShipController : MonoBehaviour
 
             transform.position += transform.up * thrustInput * speed * Time.deltaTime;
         }
-        else if (boostController != null)
+        else
         {
-            boostController.SetBoosting(false);
+            boostController?.SetBoosting(false);
         }
+    }
+
+    private float GetEngineSpeedMultiplier()
+    {
+        if (systemDamage == null)
+        {
+            return 1f;
+        }
+
+        if (systemDamage.EnginesFailed)
+        {
+            return 0.4f;
+        }
+
+        if (systemDamage.EnginesDamaged)
+        {
+            return 0.7f;
+        }
+
+        return 1f;
     }
 }

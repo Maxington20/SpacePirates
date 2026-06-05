@@ -10,6 +10,7 @@ public class PlayerStatusUI : MonoBehaviour
 
     [SerializeField] private TMP_Text shipNameText;
     [SerializeField] private TMP_Text crewText;
+
     [SerializeField] private Image shieldFillImage;
     [SerializeField] private Image hullFillImage;
     [SerializeField] private Image boostFillImage;
@@ -39,6 +40,7 @@ public class PlayerStatusUI : MonoBehaviour
             playerHealth.HullChanged += HandleHullChanged;
 
             ShipDefinitionHolder holder = playerHealth.GetComponent<ShipDefinitionHolder>();
+
             if (holder != null && holder.ShipDefinition != null && shipNameText != null)
             {
                 shipNameText.text = holder.ShipDefinition.ShipName;

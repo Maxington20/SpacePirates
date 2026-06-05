@@ -97,7 +97,6 @@ public class ShipHealth : MonoBehaviour
             float shieldDamage = Mathf.Min(CurrentShield, remainingDamage);
             CurrentShield -= shieldDamage;
             remainingDamage -= Mathf.RoundToInt(shieldDamage);
-
             ShieldChanged?.Invoke(CurrentShield, MaxShield);
         }
 
@@ -135,9 +134,9 @@ public class ShipHealth : MonoBehaviour
         {
             shipCrew.LoseCrew(1);
 
-            if (GameMessageUI.Instance != null && gameObject.CompareTag("Player"))
+            if (CompareTag("Player"))
             {
-                GameMessageUI.Instance.ShowMessage("Crew casualty! Lost 1 crew.");
+                GameMessageUI.Instance?.ShowMessage("Crew casualty! Lost 1 crew.");
             }
         }
     }
@@ -149,9 +148,9 @@ public class ShipHealth : MonoBehaviour
             return;
         }
 
-        if (systemDamage.EnginesDamaged &&
-            systemDamage.WeaponsDamaged &&
-            systemDamage.ShieldsDamaged)
+        if (systemDamage.EnginesFailed &&
+            systemDamage.WeaponsFailed &&
+            systemDamage.ShieldsFailed)
         {
             return;
         }
@@ -171,9 +170,16 @@ public class ShipHealth : MonoBehaviour
             return;
         }
 
-        if (systemDamage != null && systemDamage.ShieldsDamaged)
+        if (systemDamage != null && systemDamage.ShieldsFailed)
         {
             return;
+        }
+
+        float effectiveRegenRate = shieldRegenRate;
+
+        if (systemDamage != null && systemDamage.ShieldsDamaged)
+        {
+            effectiveRegenRate *= 0.4f;
         }
 
         if (Time.time < lastDamageTime + shieldRechargeDelay)
@@ -181,7 +187,7 @@ public class ShipHealth : MonoBehaviour
             return;
         }
 
-        CurrentShield = Mathf.Min(CurrentShield + shieldRegenRate * Time.deltaTime, MaxShield);
+        CurrentShield = Mathf.Min(CurrentShield + effectiveRegenRate * Time.deltaTime, MaxShield);
         ShieldChanged?.Invoke(CurrentShield, MaxShield);
     }
 
