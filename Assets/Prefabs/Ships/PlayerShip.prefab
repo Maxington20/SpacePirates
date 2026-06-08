@@ -453,6 +453,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerWeaponController
   projectilePrefab: {fileID: 8053444062742042143, guid: db224e65bccde3842a53830009f388b5, type: 3}
   firePoint: {fileID: 7564089447170953119}
+  primaryFireKey: 32
+  secondaryFireKey: 306
 --- !u!114 &8718653593457515594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -506,7 +508,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 456f1afae138a02459748efc80d0b046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipLoadout
-  primaryWeapon: {fileID: 11400000, guid: 256e91cbe0ae51f41945c1c86a7b2889, type: 2}
+  primaryWeapon: {fileID: 11400000, guid: 88e8a50c1e9e8ef4ca806d744d37c1bf, type: 2}
+  secondaryWeapon: {fileID: 11400000, guid: 256e91cbe0ae51f41945c1c86a7b2889, type: 2}
+  utilityWeapon: {fileID: 0}
 --- !u!114 &1789137675606047289
 MonoBehaviour:
   m_ObjectHideFlags: 0
