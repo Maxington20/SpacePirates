@@ -8,6 +8,7 @@ public class Projectile : MonoBehaviour
 
     private Vector2 direction;
     private GameObject owner;
+    private WeaponDefinition weaponDefinition;
     private int damage;
     private float speed;
 
@@ -15,6 +16,7 @@ public class Projectile : MonoBehaviour
     {
         direction = fireDirection.normalized;
         owner = projectileOwner;
+        this.weaponDefinition = weaponDefinition;
 
         damage = weaponDefinition != null ? weaponDefinition.Damage : fallbackDamage;
         speed = weaponDefinition != null ? weaponDefinition.ProjectileSpeed : fallbackSpeed;
@@ -42,7 +44,7 @@ public class Projectile : MonoBehaviour
             return;
         }
 
-        shipHealth.TakeDamage(damage);
+        shipHealth.TakeDamage(damage, weaponDefinition);
         Destroy(gameObject);
     }
 }

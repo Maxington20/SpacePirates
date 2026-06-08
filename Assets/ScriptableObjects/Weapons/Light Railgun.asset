@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cc3994db424981640a5bec42aec6c55e, type: 3}
-  m_Name: Light Laser
+  m_Name: Light Railgun
   m_EditorClassIdentifier: Assembly-CSharp::WeaponDefinition
-  weaponName: Light Laser
-  weaponCategory: 0
-  damage: 10
-  projectileSpeed: 14
-  fireCooldown: 0.25
+  weaponName: Light Railgun
+  weaponCategory: 1
+  damage: 18
+  projectileSpeed: 18
+  fireCooldown: 0.8
   projectileLifetime: 2
-  shieldDamageMultiplier: 1.5
-  hullDamageMultiplier: 0.5
-  crewDamageMultiplier: 0.5
-  systemDamageMultiplier: 0.75
+  shieldDamageMultiplier: 0.5
+  hullDamageMultiplier: 1.6
+  crewDamageMultiplier: 1
+  systemDamageMultiplier: 1

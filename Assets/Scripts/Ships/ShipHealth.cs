@@ -81,54 +81,93 @@ public class ShipHealth : MonoBehaviour
 
     public void TakeDamage(int amount)
     {
+        TakeDamage(amount, null);
+    }
+
+    public void TakeDamage(int amount, WeaponDefinition weaponDefinition)
+    {
         if (IsDestroyed || amount <= 0)
         {
             return;
         }
 
+        float shieldMultiplier = weaponDefinition != null ? weaponDefinition.ShieldDamageMultiplier : 1f;
+        float hullMultiplier = weaponDefinition != null ? weaponDefinition.HullDamageMultiplier : 1f;
+        float crewMultiplier = weaponDefinition != null ? weaponDefinition.CrewDamageMultiplier : 1f;
+        float systemMultiplier = weaponDefinition != null ? weaponDefinition.SystemDamageMultiplier : 1f;
+
         lastDamageTime = Time.time;
         damageFlash?.Flash();
 
-        int remainingDamage = amount;
         int hullDamageTaken = 0;
+        int displayedDamage = 0;
 
         if (CurrentShield > 0f)
         {
-            float shieldDamage = Mathf.Min(CurrentShield, remainingDamage);
-            CurrentShield -= shieldDamage;
-            remainingDamage -= Mathf.RoundToInt(shieldDamage);
+            float rawShieldDamage = amount * shieldMultiplier;
+            float actualShieldDamage = Mathf.Min(CurrentShield, rawShieldDamage);
+
+            CurrentShield -= actualShieldDamage;
+            displayedDamage += Mathf.RoundToInt(actualShieldDamage);
             ShieldChanged?.Invoke(CurrentShield, MaxShield);
-        }
 
-        if (remainingDamage > 0)
-        {
-            int previousHull = CurrentHull;
+            float remainingDamageRatio = rawShieldDamage > 0f
+                ? 1f - (actualShieldDamage / rawShieldDamage)
+                : 0f;
 
-            CurrentHull = Mathf.Max(CurrentHull - remainingDamage, 0);
-            hullDamageTaken = previousHull - CurrentHull;
+            int hullDamage = Mathf.RoundToInt(amount * remainingDamageRatio * hullMultiplier);
 
-            HullChanged?.Invoke(CurrentHull, MaxHull);
-
-            TryDamageCrewFromHullDamage(hullDamageTaken);
-            TryDamageShipSystem(hullDamageTaken);
-
-            if (CurrentHull <= 0)
+            if (hullDamage > 0)
             {
-                DestroyShip();
+                hullDamageTaken = ApplyHullDamage(hullDamage);
+                displayedDamage += hullDamageTaken;
             }
         }
+        else
+        {
+            int hullDamage = Mathf.RoundToInt(amount * hullMultiplier);
+            hullDamageTaken = ApplyHullDamage(hullDamage);
+            displayedDamage += hullDamageTaken;
+        }
 
-        SpawnFloatingDamageText(amount);
+        if (hullDamageTaken > 0)
+        {
+            TryDamageCrewFromHullDamage(hullDamageTaken, crewMultiplier);
+            TryDamageShipSystem(hullDamageTaken, systemMultiplier);
+        }
+
+        SpawnFloatingDamageText(Mathf.Max(displayedDamage, 1));
+
+        if (CurrentHull <= 0)
+        {
+            DestroyShip();
+        }
     }
 
-    private void TryDamageCrewFromHullDamage(int hullDamageTaken)
+    private int ApplyHullDamage(int hullDamage)
+    {
+        if (hullDamage <= 0)
+        {
+            return 0;
+        }
+
+        int previousHull = CurrentHull;
+        CurrentHull = Mathf.Max(CurrentHull - hullDamage, 0);
+
+        int hullDamageTaken = previousHull - CurrentHull;
+        HullChanged?.Invoke(CurrentHull, MaxHull);
+
+        return hullDamageTaken;
+    }
+
+    private void TryDamageCrewFromHullDamage(int hullDamageTaken, float crewDamageMultiplier)
     {
         if (!crewCanBeDamaged || shipCrew == null || hullDamageTaken <= 0)
         {
             return;
         }
 
-        float crewLossChance = Mathf.Clamp01((float)hullDamageTaken / hullDamagePerCrewLossChance);
+        float crewLossChance = Mathf.Clamp01((hullDamageTaken * crewDamageMultiplier) / hullDamagePerCrewLossChance);
 
         if (UnityEngine.Random.value <= crewLossChance)
         {
@@ -141,7 +180,7 @@ public class ShipHealth : MonoBehaviour
         }
     }
 
-    private void TryDamageShipSystem(int hullDamageTaken)
+    private void TryDamageShipSystem(int hullDamageTaken, float systemDamageMultiplier)
     {
         if (!systemsCanBeDamaged || systemDamage == null || hullDamageTaken <= 0)
         {
@@ -155,7 +194,7 @@ public class ShipHealth : MonoBehaviour
             return;
         }
 
-        float damageChance = Mathf.Clamp01(hullDamageTaken / hullDamageForSystemDamageChance);
+        float damageChance = Mathf.Clamp01((hullDamageTaken * systemDamageMultiplier) / hullDamageForSystemDamageChance);
 
         if (UnityEngine.Random.value <= damageChance)
         {
