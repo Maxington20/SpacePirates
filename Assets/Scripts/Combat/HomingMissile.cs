@@ -9,6 +9,9 @@ public class HomingMissile : MonoBehaviour
     private int damage;
     private GameObject owner;
     private WeaponDefinition weaponDefinition;
+    private bool hasLostLock;
+
+    public GameObject Owner => owner;
 
     public void Initialize(
         Transform target,
@@ -28,12 +31,18 @@ public class HomingMissile : MonoBehaviour
 
     private void Update()
     {
-        if (target != null)
+        if (target != null && !hasLostLock)
         {
             RotateTowardTarget();
         }
 
         transform.position += transform.up * moveSpeed * Time.deltaTime;
+    }
+
+    public void LoseLock()
+    {
+        hasLostLock = true;
+        target = null;
     }
 
     private void RotateTowardTarget()

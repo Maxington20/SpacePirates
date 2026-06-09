@@ -2,21 +2,29 @@ using UnityEngine;
 
 public class EnemyWeaponController : MonoBehaviour
 {
-    [Header("Weapon")]
+    [Header("Projectile Prefabs")]
     [SerializeField] private Projectile projectilePrefab;
+    [SerializeField] private HomingMissile missilePrefab;
+
+    [Header("Fire Points")]
     [SerializeField] private Transform firePoint;
+
+    [Header("Fallbacks")]
     [SerializeField] private float fallbackFireCooldown = 1.25f;
-    [SerializeField] private float firingRange = 6f;
+    [SerializeField] private float firingRange = 8f;
 
     [Header("Target")]
     [SerializeField] private Transform target;
 
     private ShipLoadout shipLoadout;
-    private float nextFireTime;
+    private ShipSystemDamage systemDamage;
+
+    private float nextPrimaryFireTime;
 
     private void Awake()
     {
         shipLoadout = GetComponent<ShipLoadout>();
+        systemDamage = GetComponent<ShipSystemDamage>();
     }
 
     private void Start()
@@ -34,7 +42,12 @@ public class EnemyWeaponController : MonoBehaviour
 
     private void Update()
     {
-        if (target == null || projectilePrefab == null || firePoint == null)
+        if (target == null || firePoint == null)
+        {
+            return;
+        }
+
+        if (systemDamage != null && systemDamage.WeaponsFailed)
         {
             return;
         }
@@ -46,25 +59,91 @@ public class EnemyWeaponController : MonoBehaviour
             return;
         }
 
-        if (Time.time < nextFireTime)
+        WeaponDefinition weapon = shipLoadout != null
+            ? shipLoadout.PrimaryWeapon
+            : null;
+
+        if (weapon == null)
         {
             return;
         }
 
-        Fire();
+        if (Time.time < nextPrimaryFireTime)
+        {
+            return;
+        }
 
-        WeaponDefinition weapon = shipLoadout != null ? shipLoadout.PrimaryWeapon : null;
-        float cooldown = weapon != null ? weapon.FireCooldown : fallbackFireCooldown;
+        bool fired = Fire(weapon);
 
-        nextFireTime = Time.time + cooldown;
+        if (!fired)
+        {
+            return;
+        }
+
+        float cooldown = weapon != null
+            ? weapon.FireCooldown
+            : fallbackFireCooldown;
+
+        if (systemDamage != null && systemDamage.WeaponsDamaged)
+        {
+            cooldown *= 1.5f;
+        }
+
+        nextPrimaryFireTime = Time.time + cooldown;
     }
 
-    private void Fire()
+    private bool Fire(WeaponDefinition weapon)
     {
-        WeaponDefinition weapon = shipLoadout != null ? shipLoadout.PrimaryWeapon : null;
+        if (weapon.WeaponCategory == WeaponCategory.Missile)
+        {
+            return FireMissile(weapon);
+        }
+
+        return FireStandardProjectile(weapon);
+    }
+
+    private bool FireStandardProjectile(WeaponDefinition weapon)
+    {
+        if (projectilePrefab == null)
+        {
+            Debug.LogWarning($"{gameObject.name} is missing projectile prefab.");
+            return false;
+        }
+
         Vector2 fireDirection = target.position - firePoint.position;
 
-        Projectile projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
-        projectile.Initialize(fireDirection, gameObject, weapon);
+        Projectile projectile = Instantiate(
+            projectilePrefab,
+            firePoint.position,
+            firePoint.rotation);
+
+        projectile.Initialize(
+            fireDirection,
+            gameObject,
+            weapon);
+
+        return true;
+    }
+
+    private bool FireMissile(WeaponDefinition weapon)
+    {
+        if (missilePrefab == null)
+        {
+            Debug.LogWarning($"{gameObject.name} is missing missile prefab.");
+            return false;
+        }
+
+        HomingMissile missile = Instantiate(
+            missilePrefab,
+            firePoint.position,
+            firePoint.rotation);
+
+        missile.Initialize(
+            target,
+            gameObject,
+            weapon,
+            1f);
+
+        return true;
     }
 }

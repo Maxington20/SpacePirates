@@ -514,6 +514,7 @@ MonoBehaviour:
   primaryWeapon: {fileID: 11400000, guid: 88e8a50c1e9e8ef4ca806d744d37c1bf, type: 2}
   secondaryWeapon: {fileID: 11400000, guid: fb56e3a569e6ae546971eb1ce62f0c09, type: 2}
   utilityWeapon: {fileID: 0}
+  flareDefinition: {fileID: 11400000, guid: cfcf33331de50e94bb799d2b5372284c, type: 2}
 --- !u!114 &1789137675606047289
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -167,6 +167,8 @@ MonoBehaviour:
   fallbackShieldRechargeDelay: 5
   crewCanBeDamaged: 1
   hullDamagePerCrewLossChance: 50
+  systemsCanBeDamaged: 1
+  hullDamageForSystemDamageChance: 75
   destructionEffectPrefab: {fileID: 191205178173224245, guid: 0655f840f3fd35d4e8bbce353909fc16, type: 3}
   floatingDamageTextPrefab: {fileID: 6069803462347529160, guid: cd413467f934aa644a4be55d2381147f, type: 3}
 --- !u!114 &1114446626365644794
@@ -198,6 +200,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyWeaponController
   projectilePrefab: {fileID: 8053444062742042143, guid: fd58eaa6bd6e05a499fb6509be631d36, type: 3}
+  missilePrefab: {fileID: 0}
   firePoint: {fileID: 7041244906659454083}
   fallbackFireCooldown: 1.25
   firingRange: 8
@@ -256,6 +259,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipLoadout
   primaryWeapon: {fileID: 11400000, guid: 88e8a50c1e9e8ef4ca806d744d37c1bf, type: 2}
+  secondaryWeapon: {fileID: 11400000, guid: fb56e3a569e6ae546971eb1ce62f0c09, type: 2}
+  utilityWeapon: {fileID: 0}
+  flareDefinition: {fileID: 0}
 --- !u!114 &7197764052264098672
 MonoBehaviour:
   m_ObjectHideFlags: 0
