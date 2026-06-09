@@ -2,12 +2,19 @@ using UnityEngine;
 
 public class PlayerWeaponController : MonoBehaviour
 {
+    [Header("Projectile Prefabs")]
     [SerializeField] private Projectile projectilePrefab;
+    [SerializeField] private HomingMissile missilePrefab;
+
+    [Header("Fire Points")]
     [SerializeField] private Transform firePoint;
 
     [Header("Input")]
     [SerializeField] private KeyCode primaryFireKey = KeyCode.Space;
     [SerializeField] private KeyCode secondaryFireKey = KeyCode.LeftControl;
+
+    [Header("References")]
+    [SerializeField] private TargetingController targetingController;
 
     private ShipLoadout shipLoadout;
     private ShipSystemDamage systemDamage;
@@ -21,6 +28,11 @@ public class PlayerWeaponController : MonoBehaviour
         shipLoadout = GetComponent<ShipLoadout>();
         systemDamage = GetComponent<ShipSystemDamage>();
         combatOrderController = GetComponent<CombatOrderController>();
+
+        if (targetingController == null)
+        {
+            targetingController = GetComponent<TargetingController>();
+        }
     }
 
     private void Update()
@@ -37,12 +49,16 @@ public class PlayerWeaponController : MonoBehaviour
 
         if (Input.GetKey(primaryFireKey))
         {
-            TryFire(shipLoadout != null ? shipLoadout.PrimaryWeapon : null, ref nextPrimaryFireTime);
+            TryFire(
+                shipLoadout != null ? shipLoadout.PrimaryWeapon : null,
+                ref nextPrimaryFireTime);
         }
 
         if (Input.GetKey(secondaryFireKey))
         {
-            TryFire(shipLoadout != null ? shipLoadout.SecondaryWeapon : null, ref nextSecondaryFireTime);
+            TryFire(
+                shipLoadout != null ? shipLoadout.SecondaryWeapon : null,
+                ref nextSecondaryFireTime);
         }
     }
 
@@ -58,7 +74,12 @@ public class PlayerWeaponController : MonoBehaviour
             return;
         }
 
-        Fire(weapon);
+        bool fired = Fire(weapon);
+
+        if (!fired)
+        {
+            return;
+        }
 
         float cooldown = weapon.FireCooldown;
 
@@ -70,20 +91,76 @@ public class PlayerWeaponController : MonoBehaviour
         nextFireTime = Time.time + cooldown;
     }
 
-    private void Fire(WeaponDefinition weapon)
+    private bool Fire(WeaponDefinition weapon)
     {
-        if (projectilePrefab == null || firePoint == null)
+        if (weapon == null)
         {
-            Debug.LogWarning("Projectile prefab or fire point is missing.");
-            return;
+            return false;
         }
-
-        Projectile projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
 
         float damageMultiplier = combatOrderController != null
             ? combatOrderController.WeaponDamageMultiplier
             : 1f;
 
-        projectile.Initialize(transform.up, gameObject, weapon, damageMultiplier);
+        if (weapon.WeaponCategory == WeaponCategory.Missile)
+        {
+            return FireMissile(weapon, damageMultiplier);
+        }
+
+        return FireStandardProjectile(weapon, damageMultiplier);
+    }
+
+    private bool FireStandardProjectile(WeaponDefinition weapon, float damageMultiplier)
+    {
+        if (projectilePrefab == null || firePoint == null)
+        {
+            Debug.LogWarning("Projectile prefab or fire point is missing.");
+            return false;
+        }
+
+        Projectile projectile = Instantiate(
+            projectilePrefab,
+            firePoint.position,
+            firePoint.rotation);
+
+        projectile.Initialize(
+            transform.up,
+            gameObject,
+            weapon,
+            damageMultiplier);
+
+        return true;
+    }
+
+    private bool FireMissile(WeaponDefinition weapon, float damageMultiplier)
+    {
+        if (missilePrefab == null || firePoint == null)
+        {
+            Debug.LogWarning("Missile prefab or fire point is missing.");
+            return false;
+        }
+
+        Targetable target = targetingController != null
+            ? targetingController.CurrentTarget
+            : null;
+
+        if (target == null)
+        {
+            GameMessageUI.Instance?.ShowMessage("Missiles require a target.");
+            return false;
+        }
+
+        HomingMissile missile = Instantiate(
+            missilePrefab,
+            firePoint.position,
+            firePoint.rotation);
+
+        missile.Initialize(
+            target.transform,
+            gameObject,
+            weapon,
+            damageMultiplier);
+
+        return true;
     }
 }

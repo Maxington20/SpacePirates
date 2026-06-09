@@ -347,7 +347,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.24056602, g: 0.2454797, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -452,10 +452,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 595633a9a8b090040ae9fac4e8787ad0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerWeaponController
-  projectilePrefab: {fileID: 8053444062742042143, guid: db224e65bccde3842a53830009f388b5, type: 3}
+  projectilePrefab: {fileID: 8053444062742042143, guid: fd58eaa6bd6e05a499fb6509be631d36, type: 3}
+  missilePrefab: {fileID: 7763806542534865201, guid: 16bd4835e60d72248b0c96e2a5441017, type: 3}
   firePoint: {fileID: 7564089447170953119}
   primaryFireKey: 32
   secondaryFireKey: 306
+  targetingController: {fileID: 3671943067459681943}
 --- !u!114 &8718653593457515594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -510,7 +512,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipLoadout
   primaryWeapon: {fileID: 11400000, guid: 88e8a50c1e9e8ef4ca806d744d37c1bf, type: 2}
-  secondaryWeapon: {fileID: 11400000, guid: 088c61dd63262bc4ab6518a443f7581f, type: 2}
+  secondaryWeapon: {fileID: 11400000, guid: fb56e3a569e6ae546971eb1ce62f0c09, type: 2}
   utilityWeapon: {fileID: 0}
 --- !u!114 &1789137675606047289
 MonoBehaviour:
