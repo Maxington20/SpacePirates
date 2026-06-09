@@ -11,12 +11,14 @@ public class Projectile : MonoBehaviour
     private WeaponDefinition weaponDefinition;
     private int damage;
     private float speed;
+    private SpriteRenderer spriteRenderer;
 
     public void Initialize(Vector2 fireDirection, GameObject projectileOwner, WeaponDefinition weaponDefinition = null)
     {
         direction = fireDirection.normalized;
         owner = projectileOwner;
         this.weaponDefinition = weaponDefinition;
+        ApplyWeaponVisuals();
 
         damage = weaponDefinition != null ? weaponDefinition.Damage : fallbackDamage;
         speed = weaponDefinition != null ? weaponDefinition.ProjectileSpeed : fallbackSpeed;
@@ -46,5 +48,33 @@ public class Projectile : MonoBehaviour
 
         shipHealth.TakeDamage(damage, weaponDefinition);
         Destroy(gameObject);
+    }
+
+    private void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    private void ApplyWeaponVisuals()
+    {
+        if (spriteRenderer == null || weaponDefinition == null)
+        {
+            return;
+        }
+
+        switch (weaponDefinition.WeaponCategory)
+        {
+            case WeaponCategory.Laser:
+                spriteRenderer.color = Color.red;
+                break;
+
+            case WeaponCategory.Railgun:
+                spriteRenderer.color = Color.yellow;
+                break;
+
+            case WeaponCategory.EMP:
+                spriteRenderer.color = Color.cyan;
+                break;
+        }
     }
 }

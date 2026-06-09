@@ -509,7 +509,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipLoadout
   primaryWeapon: {fileID: 11400000, guid: 88e8a50c1e9e8ef4ca806d744d37c1bf, type: 2}
-  secondaryWeapon: {fileID: 11400000, guid: 256e91cbe0ae51f41945c1c86a7b2889, type: 2}
+  secondaryWeapon: {fileID: 11400000, guid: 088c61dd63262bc4ab6518a443f7581f, type: 2}
   utilityWeapon: {fileID: 0}
 --- !u!114 &1789137675606047289
 MonoBehaviour:
