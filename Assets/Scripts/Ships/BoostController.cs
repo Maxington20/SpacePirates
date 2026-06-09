@@ -18,9 +18,12 @@ public class BoostController : MonoBehaviour
     public event Action<float, float> EnergyChanged;
 
     private float lastBoostUseTime;
+    private CombatOrderController combatOrderController;
 
     private void Awake()
     {
+        combatOrderController = GetComponent<CombatOrderController>();
+
         CurrentEnergy = maxEnergy;
         EnergyChanged?.Invoke(CurrentEnergy, maxEnergy);
     }
@@ -49,7 +52,11 @@ public class BoostController : MonoBehaviour
 
     private void DrainBoostEnergy()
     {
-        CurrentEnergy = Mathf.Max(CurrentEnergy - drainPerSecond * Time.deltaTime, 0f);
+        float drainMultiplier = combatOrderController != null
+            ? combatOrderController.BoostDrainMultiplier
+            : 1f;
+
+        CurrentEnergy = Mathf.Max(CurrentEnergy - drainPerSecond * drainMultiplier * Time.deltaTime, 0f);
         lastBoostUseTime = Time.time;
         EnergyChanged?.Invoke(CurrentEnergy, maxEnergy);
 

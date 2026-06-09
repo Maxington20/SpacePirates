@@ -16,11 +16,13 @@ public class PlayerShipController : MonoBehaviour
 
     private BoostController boostController;
     private ShipSystemDamage systemDamage;
+    private CombatOrderController combatOrderController;
 
     private void Awake()
     {
         boostController = GetComponent<BoostController>();
         systemDamage = GetComponent<ShipSystemDamage>();
+        combatOrderController = GetComponent<CombatOrderController>();
 
         ShipDefinitionHolder holder = GetComponent<ShipDefinitionHolder>();
 
@@ -78,7 +80,13 @@ public class PlayerShipController : MonoBehaviour
         if (!Mathf.Approximately(thrustInput, 0f))
         {
             float speed = thrustInput > 0f ? forwardSpeed : reverseSpeed;
+
             speed *= GetEngineSpeedMultiplier();
+
+            if (combatOrderController != null)
+            {
+                speed *= combatOrderController.SpeedMultiplier;
+            }
 
             if (boostController != null && boostController.IsBoosting)
             {

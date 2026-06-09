@@ -11,6 +11,7 @@ public class PlayerWeaponController : MonoBehaviour
 
     private ShipLoadout shipLoadout;
     private ShipSystemDamage systemDamage;
+    private CombatOrderController combatOrderController;
 
     private float nextPrimaryFireTime;
     private float nextSecondaryFireTime;
@@ -19,6 +20,7 @@ public class PlayerWeaponController : MonoBehaviour
     {
         shipLoadout = GetComponent<ShipLoadout>();
         systemDamage = GetComponent<ShipSystemDamage>();
+        combatOrderController = GetComponent<CombatOrderController>();
     }
 
     private void Update()
@@ -77,6 +79,11 @@ public class PlayerWeaponController : MonoBehaviour
         }
 
         Projectile projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
-        projectile.Initialize(transform.up, gameObject, weapon);
+
+        float damageMultiplier = combatOrderController != null
+            ? combatOrderController.WeaponDamageMultiplier
+            : 1f;
+
+        projectile.Initialize(transform.up, gameObject, weapon, damageMultiplier);
     }
 }

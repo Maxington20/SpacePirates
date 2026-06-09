@@ -36,6 +36,7 @@ public class ShipHealth : MonoBehaviour
     private DamageFlash damageFlash;
     private ShipCrew shipCrew;
     private ShipSystemDamage systemDamage;
+    private CombatOrderController combatOrderController;
 
     private float shieldRegenRate;
     private float shieldRechargeDelay;
@@ -46,6 +47,7 @@ public class ShipHealth : MonoBehaviour
         damageFlash = GetComponent<DamageFlash>();
         shipCrew = GetComponent<ShipCrew>();
         systemDamage = GetComponent<ShipSystemDamage>();
+        combatOrderController = GetComponent<CombatOrderController>();
 
         ShipDefinitionHolder holder = GetComponent<ShipDefinitionHolder>();
 
@@ -219,6 +221,11 @@ public class ShipHealth : MonoBehaviour
         if (systemDamage != null && systemDamage.ShieldsDamaged)
         {
             effectiveRegenRate *= 0.4f;
+        }
+
+        if (combatOrderController != null)
+        {
+            effectiveRegenRate *= combatOrderController.ShieldRegenMultiplier;
         }
 
         if (Time.time < lastDamageTime + shieldRechargeDelay)

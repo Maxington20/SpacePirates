@@ -9,22 +9,34 @@ public class Projectile : MonoBehaviour
     private Vector2 direction;
     private GameObject owner;
     private WeaponDefinition weaponDefinition;
+    private SpriteRenderer spriteRenderer;
     private int damage;
     private float speed;
-    private SpriteRenderer spriteRenderer;
 
-    public void Initialize(Vector2 fireDirection, GameObject projectileOwner, WeaponDefinition weaponDefinition = null)
+    private void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    public void Initialize(
+        Vector2 fireDirection,
+        GameObject projectileOwner,
+        WeaponDefinition weaponDefinition = null,
+        float damageMultiplier = 1f)
     {
         direction = fireDirection.normalized;
         owner = projectileOwner;
         this.weaponDefinition = weaponDefinition;
-        ApplyWeaponVisuals();
 
-        damage = weaponDefinition != null ? weaponDefinition.Damage : fallbackDamage;
+        int baseDamage = weaponDefinition != null ? weaponDefinition.Damage : fallbackDamage;
+        damage = Mathf.RoundToInt(baseDamage * damageMultiplier);
+
         speed = weaponDefinition != null ? weaponDefinition.ProjectileSpeed : fallbackSpeed;
 
         float lifetime = weaponDefinition != null ? weaponDefinition.ProjectileLifetime : fallbackLifetime;
         Destroy(gameObject, lifetime);
+
+        ApplyWeaponVisuals();
     }
 
     private void Update()
@@ -50,11 +62,6 @@ public class Projectile : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void Awake()
-    {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-    }
-
     private void ApplyWeaponVisuals()
     {
         if (spriteRenderer == null || weaponDefinition == null)
@@ -74,6 +81,14 @@ public class Projectile : MonoBehaviour
 
             case WeaponCategory.EMP:
                 spriteRenderer.color = Color.cyan;
+                break;
+
+            case WeaponCategory.Missile:
+                spriteRenderer.color = Color.white;
+                break;
+
+            case WeaponCategory.BoardingPod:
+                spriteRenderer.color = Color.magenta;
                 break;
         }
     }
