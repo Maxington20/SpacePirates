@@ -14,9 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShipDefinition
   shipName: Rustbucket Scout
   shipClass: Scout
+  shipRole: 0
   maxHull: 100
-  forwardSpeed: 6
-  reverseSpeed: 3
-  rotationSpeed: 180
+  maxShield: 50
+  shieldRegenRate: 5
+  shieldRechargeDelay: 5
+  forwardSpeed: 3.2
+  reverseSpeed: 1.2
+  rotationSpeed: 75
   crewCapacity: 5
+  startingCrew: 5
   cargoCapacity: 10

@@ -14,13 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShipDefinition
   shipName: Pirate Raider
   shipClass: Raider
+  shipRole: 0
   maxHull: 50
   maxShield: 1
   shieldRegenRate: 4
   shieldRechargeDelay: 5
-  forwardSpeed: 4
-  reverseSpeed: 2
-  rotationSpeed: 120
+  forwardSpeed: 2.8
+  reverseSpeed: 1
+  rotationSpeed: 65
   crewCapacity: 8
   startingCrew: 8
   cargoCapacity: 12
