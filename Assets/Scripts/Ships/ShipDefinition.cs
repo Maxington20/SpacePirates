@@ -6,6 +6,7 @@ public class ShipDefinition : ScriptableObject
     [Header("Identity")]
     [SerializeField] private string shipName = "Unknown Ship";
     [SerializeField] private string shipClass = "Scout";
+    [SerializeField] private ShipRole shipRole;
 
     [Header("Hull")]
     [SerializeField] private int maxHull = 100;
@@ -40,4 +41,5 @@ public class ShipDefinition : ScriptableObject
     public int CrewCapacity => crewCapacity;
     public int StartingCrew => startingCrew;
     public int CargoCapacity => cargoCapacity;
+    public ShipRole ShipRole => shipRole;
 }

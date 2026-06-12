@@ -272,6 +272,7 @@ GameObject:
   - component: {fileID: 4575849615751173195}
   - component: {fileID: 6628526509503087863}
   - component: {fileID: 5736340610894177517}
+  - component: {fileID: -2045055017689459586}
   m_Layer: 0
   m_Name: PlayerShip
   m_TagString: Player
@@ -644,3 +645,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatOrderController
   currentOrder: 0
+--- !u!114 &-2045055017689459586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7446172372825288235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 588e606006253a14697d5b708529a557, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShipRoleHolder
+  roleProfile: {fileID: 11400000, guid: bbf00afd20d97744c9c5dd47dcbd06f9, type: 2}

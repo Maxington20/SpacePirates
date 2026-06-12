@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 1818857925806248452}
   - component: {fileID: -2938907097934000299}
   - component: {fileID: 5516567367225683787}
+  - component: {fileID: 3569134158748519443}
   m_Layer: 0
   m_Name: EnemyShip
   m_TagString: Untagged
@@ -288,6 +289,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf7aa5586983d5c498e04b637de9ccf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipSystemDamage
+--- !u!114 &3569134158748519443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 265217396433256716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 588e606006253a14697d5b708529a557, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShipRoleHolder
+  roleProfile: {fileID: 11400000, guid: bbf00afd20d97744c9c5dd47dcbd06f9, type: 2}
 --- !u!1 &1549414063692853767
 GameObject:
   m_ObjectHideFlags: 0
